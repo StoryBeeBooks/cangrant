@@ -8,6 +8,7 @@ import 'package:cangrant/screens/main_app/privacy_policy_screen.dart';
 import 'package:cangrant/screens/main_app/terms_of_use_screen.dart';
 import 'package:cangrant/screens/main_app/about_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -33,7 +34,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _notificationsEnabled = prefs.getBool('notifications') ?? true;
       _darkModeEnabled = prefs.getBool('darkMode') ?? false;
       final languageCode = prefs.getString('language') ?? 'en';
-      _selectedLanguage = languageCode == 'zh' ? 'Chinese (Simplified)' : 'English (US)';
+      _selectedLanguage = languageCode == 'zh'
+          ? 'Chinese (Simplified)'
+          : 'English (US)';
     });
   }
 
@@ -77,10 +80,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     final supabaseService = SupabaseService();
     final user = supabaseService.getCurrentUser();
     final userEmail = user?.email ?? 'sarah.chen@example.com';
-    final userName = user?.email?.split('@')[0].replaceAll('.', ' ') ?? 'Sarah Chen';
+    final userName =
+        user?.email?.split('@')[0].replaceAll('.', ' ') ?? 'Sarah Chen';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -129,10 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 4),
                     Text(
                       userEmail,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                      ),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ],
                 ),
@@ -164,9 +166,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         color: Color(0xFF5E35B1),
                       ),
                     ),
-                    title: const Text(
-                      'Saved Grants',
-                      style: TextStyle(
+                    title: Text(
+                      localizations.translate('saved_grants'),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
@@ -193,11 +195,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Text(
-                        'Preferences',
-                        style: TextStyle(
+                        localizations.translate('settings'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -228,9 +230,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF1976D2),
                               ),
                             ),
-                            title: const Text(
-                              'Notifications',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('notifications'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -239,7 +241,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Switch(
                               value: _notificationsEnabled,
                               onChanged: _saveNotificationPreference,
-                              activeColor: const Color(0xFF5E35B1),
+                              activeThumbColor: const Color(0xFF5E35B1),
                             ),
                           ),
                           const Divider(height: 1),
@@ -261,9 +263,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF8E24AA),
                               ),
                             ),
-                            title: const Text(
-                              'Dark Mode',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('dark_mode'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -272,7 +274,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             trailing: Switch(
                               value: _darkModeEnabled,
                               onChanged: _saveDarkModePreference,
-                              activeColor: const Color(0xFF5E35B1),
+                              activeThumbColor: const Color(0xFF5E35B1),
                             ),
                           ),
                           const Divider(height: 1),
@@ -294,9 +296,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF388E3C),
                               ),
                             ),
-                            title: const Text(
-                              'Language',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('language'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -307,7 +309,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               final result = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const LanguageSelectionScreen(),
+                                  builder: (context) =>
+                                      const LanguageSelectionScreen(),
                                 ),
                               );
                               if (result != null) {
@@ -326,17 +329,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 24),
 
-              // Support & Information Section
+              // Support Section
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 4.0),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
                       child: Text(
-                        'Support & Information',
-                        style: TextStyle(
+                        localizations.translate('support'),
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
@@ -367,9 +370,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFFFF9800),
                               ),
                             ),
-                            title: const Text(
-                              'Help Center',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('help_center'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -379,7 +382,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const HelpCenterScreen(),
+                                  builder: (context) =>
+                                      const HelpCenterScreen(),
                                 ),
                               );
                             },
@@ -403,9 +407,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF00ACC1),
                               ),
                             ),
-                            title: const Text(
-                              'Privacy Policy',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('privacy_policy'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -415,7 +419,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const PrivacyPolicyScreen(),
+                                  builder: (context) =>
+                                      const PrivacyPolicyScreen(),
                                 ),
                               );
                             },
@@ -439,9 +444,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF6D4C41),
                               ),
                             ),
-                            title: const Text(
-                              'Terms of Use',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('terms_of_use'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -451,7 +456,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const TermsOfUseScreen(),
+                                  builder: (context) =>
+                                      const TermsOfUseScreen(),
                                 ),
                               );
                             },
@@ -475,14 +481,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Color(0xFF5C6BC0),
                               ),
                             ),
-                            title: const Text(
-                              'About',
-                              style: TextStyle(
+                            title: Text(
+                              localizations.translate('about'),
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            subtitle: const Text('Version 1.0.0'),
+                            subtitle: Text(
+                              '${localizations.translate('version')} 1.0.0',
+                            ),
                             trailing: const Icon(Icons.chevron_right),
                             onTap: () {
                               Navigator.push(
@@ -513,19 +521,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: InkWell(
                     onTap: () => _signOut(context),
                     borderRadius: BorderRadius.circular(16),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.logout,
-                            color: Colors.red,
-                          ),
-                          SizedBox(width: 8),
+                          const Icon(Icons.logout, color: Colors.red),
+                          const SizedBox(width: 8),
                           Text(
-                            'Sign Out',
-                            style: TextStyle(
+                            localizations.translate('sign_out'),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: Colors.red,
@@ -545,10 +550,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 padding: EdgeInsets.all(16.0),
                 child: Text(
                   'Your Saved Grants',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
 

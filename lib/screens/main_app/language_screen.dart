@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cangrant/main.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});
@@ -27,11 +29,11 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
     final prefs = await SharedPreferences.getInstance();
     final languageCode = prefs.getString('language') ?? 'en';
     setState(() {
-      _selectedLanguage = _languages
-              .firstWhere(
-                (lang) => lang['code'] == languageCode,
-                orElse: () => _languages[0],
-              )['name'] ??
+      _selectedLanguage =
+          _languages.firstWhere(
+            (lang) => lang['code'] == languageCode,
+            orElse: () => _languages[0],
+          )['name'] ??
           'English (US)';
     });
   }
@@ -39,13 +41,20 @@ class _LanguageSelectionScreenState extends State<LanguageSelectionScreen> {
   Future<void> _saveLanguage(String languageCode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('language', languageCode);
+
+    // Update the app locale
+    if (context.mounted) {
+      MyApp.setLocale(context, Locale(languageCode));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Language'),
+        title: Text(localizations.translate('select_language')),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context, _selectedLanguage),

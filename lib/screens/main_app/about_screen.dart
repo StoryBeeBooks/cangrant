@@ -26,27 +26,17 @@ class AboutScreen extends StatelessWidget {
                   color: const Color(0xFF5E35B1),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Icon(
-                  Icons.search,
-                  size: 60,
-                  color: Colors.white,
-                ),
+                child: const Icon(Icons.search, size: 60, color: Colors.white),
               ),
               const SizedBox(height: 24),
               const Text(
                 'CanGrant',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               const Text(
                 'Version 1.0.0',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 32),
               Text(
@@ -79,10 +69,7 @@ class AboutScreen extends StatelessWidget {
               Text(
                 '© 2025 StoryBee Books. All rights reserved.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               ),
               const SizedBox(height: 16),
               TextButton(
@@ -102,19 +89,10 @@ class AboutScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
-          ),
-        ),
+        Text(label, style: const TextStyle(fontSize: 16, color: Colors.grey)),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ],
     );

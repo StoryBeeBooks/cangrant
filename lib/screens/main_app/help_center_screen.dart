@@ -36,10 +36,7 @@ class HelpCenterScreen extends StatelessWidget {
               const SizedBox(height: 24),
               const Text(
                 'Need Help?',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
               Text(
@@ -75,10 +72,7 @@ class HelpCenterScreen extends StatelessWidget {
               const SizedBox(height: 16),
               const Text(
                 'Quick Links',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 16),
               _buildQuickLink(
@@ -86,8 +80,9 @@ class HelpCenterScreen extends StatelessWidget {
                 title: 'Email Support',
                 subtitle: 'support@cangrant.app',
                 onTap: () async {
-                  final Uri emailUrl =
-                      Uri.parse('mailto:support@cangrant.app?subject=Help Request');
+                  final Uri emailUrl = Uri.parse(
+                    'mailto:support@cangrant.app?subject=Help Request',
+                  );
                   if (await canLaunchUrl(emailUrl)) {
                     await launchUrl(emailUrl);
                   }
@@ -145,10 +140,7 @@ class HelpCenterScreen extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                   ),
                 ],
               ),

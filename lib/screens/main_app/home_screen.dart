@@ -3,6 +3,7 @@ import 'package:cangrant/models/grant.dart';
 import 'package:cangrant/services/grant_service.dart';
 import 'package:cangrant/screens/main_app/filter_dialog.dart';
 import 'package:cangrant/screens/main_app/grant_detail_screen.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -101,6 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: SafeArea(
@@ -128,20 +131,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Grants',
-                              style: TextStyle(
+                              localizations.translate('discover_grants'),
+                              style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              'Discover funding opportunities',
-                              style: TextStyle(
+                              localizations.translate('discover_grants'),
+                              style: const TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFF757575),
                               ),
@@ -157,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   TextField(
                     onChanged: _onSearchChanged,
                     decoration: InputDecoration(
-                      hintText: 'Search grants...',
+                      hintText: localizations.translate('search_grants'),
                       hintStyle: const TextStyle(color: Color(0xFFBDBDBD)),
                       prefixIcon: const Icon(
                         Icons.search,
@@ -180,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: OutlinedButton.icon(
                       onPressed: _showFilterDialog,
                       icon: const Icon(Icons.filter_list),
-                      label: const Text('Filters'),
+                      label: Text(localizations.translate('filter')),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         side: const BorderSide(color: Color(0xFFE0E0E0)),
@@ -226,10 +229,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'No grants found',
+                            localizations.translate('no_grants_found'),
                             style: TextStyle(
                               fontSize: 18,
                               color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            localizations.translate('adjust_filters'),
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[500],
                             ),
                           ),
                         ],

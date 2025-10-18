@@ -20,10 +20,7 @@ class SavedGrantsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 '0 grants saved',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
               ),
             ),
             Expanded(
@@ -39,18 +36,12 @@ class SavedGrantsScreen extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       'No saved grants yet',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey[600],
-                      ),
+                      style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Bookmark grants to save them here',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[500],
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.grey[500]),
                     ),
                   ],
                 ),

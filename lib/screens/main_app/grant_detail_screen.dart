@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cangrant/models/grant.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class GrantDetailScreen extends StatefulWidget {
   final Grant grant;
@@ -19,6 +20,19 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
     setState(() {
       _isSaved = !_isSaved;
     });
+
+    // Show snackbar with translated message
+    final localizations = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          _isSaved
+              ? localizations.translate('save')
+              : localizations.translate('unsave'),
+        ),
+        duration: const Duration(seconds: 1),
+      ),
+    );
     // TODO: Persist save state
   }
 
@@ -38,6 +52,8 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -145,12 +161,13 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
 
                     // Award amount
                     _buildInfoCard(
+                      context,
                       icon: Icons.attach_money,
                       iconColor: const Color(0xFF4CAF50),
                       iconBgColor: const Color(0xFF4CAF50).withOpacity(0.1),
-                      title: 'Award Amount',
+                      title: localizations.translate('amount'),
                       value:
-                          '\$${NumberFormat('#,###').format(widget.grant.amountMax)}',
+                          '${localizations.translate('up_to')} \$${NumberFormat('#,###').format(widget.grant.amountMax)}',
                     ),
 
                     const SizedBox(height: 16),
@@ -158,10 +175,11 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                     // Application deadline
                     if (widget.grant.deadline != null)
                       _buildInfoCard(
+                        context,
                         icon: Icons.calendar_today,
                         iconColor: const Color(0xFFFF9800),
                         iconBgColor: const Color(0xFFFF9800).withOpacity(0.1),
-                        title: 'Application Deadline',
+                        title: localizations.translate('deadline'),
                         value: _formatDate(widget.grant.deadline!),
                       ),
 
@@ -171,12 +189,15 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: _buildGridItem('Status', widget.grant.status),
+                          child: _buildGridItem(
+                            localizations.translate('status'),
+                            widget.grant.status,
+                          ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildGridItem(
-                            'Industry',
+                            localizations.translate('eligibility'),
                             _getIndustryFromTags(),
                           ),
                         ),
@@ -190,14 +211,14 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                       children: [
                         Expanded(
                           child: _buildGridItem(
-                            'Eligibility',
+                            localizations.translate('eligibility'),
                             _getEligibilityFromTags(),
                           ),
                         ),
                         const SizedBox(width: 16),
                         Expanded(
                           child: _buildGridItem(
-                            'Funding Level',
+                            localizations.translate('issuing_body'),
                             _getFundingLevelFromTags(),
                           ),
                         ),
@@ -211,9 +232,9 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                       children: [
                         const Icon(Icons.description, color: Color(0xFF5E35B1)),
                         const SizedBox(width: 8),
-                        const Text(
-                          'About This Grant',
-                          style: TextStyle(
+                        Text(
+                          localizations.translate('overview'),
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -240,9 +261,9 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                       child: ElevatedButton.icon(
                         onPressed: _launchGrantWebsite,
                         icon: const Icon(Icons.open_in_new),
-                        label: const Text(
-                          'Visit Grant Website',
-                          style: TextStyle(
+                        label: Text(
+                          localizations.translate('apply_now'),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
@@ -305,7 +326,8 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
     );
   }
 
-  Widget _buildInfoCard({
+  Widget _buildInfoCard(
+    BuildContext context, {
     required IconData icon,
     required Color iconColor,
     required Color iconBgColor,
