@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:cangrant/services/supabase_service.dart';
+import 'package:cangrant/screens/pre_login/language_selection_screen.dart';
+import 'package:cangrant/screens/main_app/main_screen.dart';
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  final SupabaseService _supabaseService = SupabaseService();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkAuthenticationAndNavigate();
+  }
+
+  Future<void> _checkAuthenticationAndNavigate() async {
+    // Show splash screen for 2-3 seconds minimum
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (!mounted) return;
+
+    // Check if user is logged in
+    final bool isLoggedIn = _supabaseService.isUserLoggedIn();
+
+    // Navigate based on authentication status
+    if (isLoggedIn) {
+      // User is logged in, go to main app
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+      );
+    } else {
+      // User is not logged in, go to language selection
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const LanguageSelectionScreen(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // CanGrant Logo
+            // TODO: Replace with actual logo image when available
+            Icon(Icons.card_giftcard, size: 100, color: Colors.white),
+            const SizedBox(height: 16),
+            const Text(
+              'CanGrant',
+              style: TextStyle(
+                fontSize: 32,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 48),
+            // Loading indicator
+            const CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
