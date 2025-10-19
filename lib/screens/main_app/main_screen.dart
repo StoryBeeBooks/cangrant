@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cangrant/screens/main_app/home_screen.dart';
 import 'package:cangrant/screens/main_app/profile_screen.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,6 +18,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     return Scaffold(
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -26,9 +29,15 @@ class _MainScreenState extends State<MainScreen> {
             _currentIndex = index;
           });
         },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.home),
+            label: localizations.translate('home'),
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.person),
+            label: localizations.translate('profile'),
+          ),
         ],
       ),
     );

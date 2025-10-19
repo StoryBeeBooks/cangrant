@@ -21,6 +21,9 @@ class AppLocalizations {
       'no_grants_found': 'No grants found',
       'adjust_filters': 'Try adjusting your search or filters',
 
+      // Navigation
+      'home': 'Home',
+
       // Grant Status
       'status_open': 'Open',
       'status_closed': 'Closed',
@@ -162,14 +165,18 @@ class AppLocalizations {
       'loading': 'Loading...',
       'error': 'Error',
       'success': 'Success',
+      'grants_found': 'grants found', // "x grants found"
     },
     'zh': {
       // Home Screen
-      'discover_grants': '发现资助',
+      'discover_grants': '政府补助和资金贷款',
       'search_grants': '搜索资助...',
       'filter': '筛选',
       'no_grants_found': '未找到资助',
       'adjust_filters': '尝试调整您的搜索或筛选条件',
+      'grants_found': '项补贴和资助', // "x 项补贴和资助"
+      // Navigation
+      'home': '主页',
 
       // Grant Status
       'status_open': '开放',
@@ -202,7 +209,7 @@ class AppLocalizations {
       'apply_filters': '应用筛选',
 
       // Profile Screen
-      'profile': '个人资料',
+      'profile': '设置',
       'settings': '设置',
       'saved_grants': '已保存的资助',
       'notifications': '通知',

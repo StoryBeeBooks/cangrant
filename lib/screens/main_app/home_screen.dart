@@ -4,6 +4,7 @@ import 'package:cangrant/services/grant_service.dart';
 import 'package:cangrant/screens/main_app/filter_dialog.dart';
 import 'package:cangrant/screens/main_app/grant_detail_screen.dart';
 import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -116,43 +117,13 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF5E35B1),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.search,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              localizations.translate('discover_grants'),
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              localizations.translate('discover_grants'),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Color(0xFF757575),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                  // Title only, no icon, no subtitle
+                  Text(
+                    localizations.translate('discover_grants'),
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 16),
 
@@ -203,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  '${_filteredGrants.length} ${_filteredGrants.length == 1 ? 'grant' : 'grants'} found',
+                  '${_filteredGrants.length} ${localizations.translate('grants_found')}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
@@ -308,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '\$${_formatNumber(grant.amountMax)}',
+                    '${_formatNumber(grant.amountMax)}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -361,9 +332,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _formatNumber(int number) {
-    if (number >= 1000) {
-      return '${(number / 1000).toStringAsFixed(number % 1000 == 0 ? 0 : 1)}k';
-    }
-    return number.toString();
+    return NumberFormat('#,###').format(number);
   }
 }
