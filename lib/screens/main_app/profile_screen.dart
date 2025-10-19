@@ -71,15 +71,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
-  String _getUserInitials(String? email) {
-    if (email == null || email.isEmpty) return 'SC';
-    final parts = email.split('@')[0].split('.');
-    if (parts.length >= 2) {
-      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
-    }
-    return email.substring(0, 2).toUpperCase();
-  }
-
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context);
@@ -107,26 +98,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     bottomRight: Radius.circular(24),
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+                padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
                 child: Column(
                   children: [
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white,
-                      child: Text(
-                        _getUserInitials(userEmail),
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF5E35B1),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
                     Text(
                       userEmail,
                       style: const TextStyle(
-                        fontSize: 20,
+                        fontSize: 22,
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
