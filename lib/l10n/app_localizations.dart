@@ -15,7 +15,7 @@ class AppLocalizations {
   static final Map<String, Map<String, String>> _localizedValues = {
     'en': {
       // Home Screen
-      'discover_grants': 'Discover Grants',
+      'discover_grants': 'Funding Opportunities',
       'search_grants': 'Search grants...',
       'filter': 'Filter',
       'no_grants_found': 'No grants found',
@@ -28,6 +28,13 @@ class AppLocalizations {
       'status_open': 'Open',
       'status_closed': 'Closed',
       'status_upcoming': 'Upcoming',
+      'status_coming_soon': 'Coming Soon',
+      'status_rolling_basis': 'Rolling Basis',
+
+      // Eligibility Tags
+      'tag_nonprofit': 'Non-profit',
+      'tag_corporation': 'Corporation',
+      'tag_charity': 'Charity',
 
       // Grant Detail Screen
       'apply_now': 'Apply Now',
@@ -36,6 +43,7 @@ class AppLocalizations {
       'grant_details': 'Grant Details',
       'status': 'Status',
       'deadline': 'Deadline',
+      'application_open_date': 'Application Open Date',
       'amount': 'Amount',
       'up_to': 'Up to',
       'issuing_body': 'Issuing Body',
@@ -43,14 +51,16 @@ class AppLocalizations {
       'overview': 'Overview',
 
       // Filter Dialog
-      'filter_grants': 'Filter Grants',
-      'grant_status': 'Grant Status',
-      'all_statuses': 'All Statuses',
+      'filter_grants': 'Filters',
+      'grant_status': 'Status',
+      'all_statuses': 'All Status',
       'open': 'Open',
       'closed': 'Closed',
-      'upcoming': 'Upcoming',
-      'eligibility_criteria': 'Eligibility Criteria',
+      'coming_soon': 'Coming Soon',
+      'rolling_basis': 'Rolling Basis',
+      'eligibility_criteria': 'Eligibility',
       'all_eligibility': 'All Eligibility',
+      'show_results': 'Show Results',
       'reset': 'Reset',
       'apply_filters': 'Apply Filters',
 
@@ -169,7 +179,7 @@ class AppLocalizations {
     },
     'zh': {
       // Home Screen
-      'discover_grants': '政府补助和资金贷款',
+      'discover_grants': '资金机会',
       'search_grants': '搜索资助...',
       'filter': '筛选',
       'no_grants_found': '未找到资助',
@@ -182,6 +192,13 @@ class AppLocalizations {
       'status_open': '开放',
       'status_closed': '关闭',
       'status_upcoming': '即将开放',
+      'status_coming_soon': '即将推出',
+      'status_rolling_basis': '滚动申请',
+
+      // Eligibility Tags
+      'tag_nonprofit': '非营利组织',
+      'tag_corporation': '企业',
+      'tag_charity': '慈善机构',
 
       // Grant Detail Screen
       'apply_now': '立即申请',
@@ -190,6 +207,7 @@ class AppLocalizations {
       'grant_details': '资助详情',
       'status': '状态',
       'deadline': '截止日期',
+      'application_open_date': '申请开放日期',
       'amount': '金额',
       'up_to': '最高',
       'issuing_body': '发放机构',
@@ -197,14 +215,16 @@ class AppLocalizations {
       'overview': '概述',
 
       // Filter Dialog
-      'filter_grants': '筛选资助',
-      'grant_status': '资助状态',
+      'filter_grants': '筛选',
+      'grant_status': '补助状态',
       'all_statuses': '所有状态',
-      'open': '开放',
-      'closed': '关闭',
-      'upcoming': '即将开放',
+      'open': '目前开放',
+      'closed': '目前关闭',
+      'coming_soon': '即将开启',
+      'rolling_basis': '持续开放',
       'eligibility_criteria': '资格要求',
       'all_eligibility': '所有资格',
+      'show_results': '显示结果',
       'reset': '重置',
       'apply_filters': '应用筛选',
 

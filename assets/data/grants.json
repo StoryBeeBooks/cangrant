@@ -4,45 +4,61 @@
       "id": 1,
       "title": "Funding for Art",
       "list_summary": "Federal funding for corporations seeking great artists for art projects.",
-      "full_details": "Administered by the Government of Canada, this fund is dedicated to supporting incorporated artistic ventures. It aims to foster creativity by providing financial backing to corporations that are seeking to commission or partner with great artists.",
+      "full_details": "Funding for Art - seeking great artists. Administered by the Government of Canada, this fund is dedicated to supporting incorporated artistic ventures. It aims to foster creativity by providing financial backing to corporations that are seeking to commission or partner with great artists.",
       "status": "Closed",
+      "application_open_date": "2025-09-01",
       "deadline": "2025-09-20",
       "amount_max": 5000,
       "issuing_body": "Government of Canada",
-      "eligibility_tags": ["Art", "For Corporations", "Federal"]
+      "grant_link": "www.storybee.space",
+      "eligibility_tags": ["Corporation"],
+      "industry_tags": ["Art"],
+      "type_tags": ["Federal"]
     },
     {
       "id": 2,
       "title": "Funding for Provincial Education",
       "list_summary": "Provincial funding from Ontario for organizations seeking to hire teachers.",
-      "full_details": "The Ontario government offers this grant to support educational initiatives across the province. It is open to non-profits, for-profit corporations, and registered charities that are focused on improving educational outcomes by hiring qualified teachers.",
+      "full_details": "Funding for Provincial Education - seeking teachers. The Ontario government offers this grant to support educational initiatives across the province. It is open to non-profits, for-profit corporations, and registered charities that are focused on improving educational outcomes by hiring qualified teachers.",
       "status": "Open",
+      "application_open_date": "2025-09-02",
       "deadline": "2025-11-23",
       "amount_max": 20000,
       "issuing_body": "Ontario",
-      "eligibility_tags": ["Education", "Non-profit", "For Corporations", "Charity", "Provincial"]
+      "grant_link": "www.nridl.org",
+      "eligibility_tags": ["Non-profit", "Corporation", "Charity"],
+      "industry_tags": ["Education"],
+      "type_tags": ["Provincial"]
     },
     {
       "id": 3,
       "title": "Funding for Women Entrepreneurs",
       "list_summary": "Corporate funding from BMO to encourage gender equity and support charitable environmental causes.",
-      "full_details": "BMO's initiative for Women Entrepreneurs is a private-sector grant designed to encourage gender equity. This funding is targeted towards charities whose work aligns with environmental protection and sustainability.",
+      "full_details": "Funding for Women Entrepreneurs - Encourage gender equity. BMO's initiative for Women Entrepreneurs is a private-sector grant designed to encourage gender equity. This funding is targeted towards charities whose work aligns with environmental protection and sustainability.",
       "status": "Open",
+      "application_open_date": "2024-08-11",
       "deadline": "2025-11-12",
       "amount_max": 3400,
       "issuing_body": "BMO",
-      "eligibility_tags": ["Environment", "Charity", "Company"]
+      "grant_link": "www.irpartners.ca",
+      "eligibility_tags": ["Charity"],
+      "industry_tags": ["Environment"],
+      "type_tags": ["Company"]
     },
     {
       "id": 4,
       "title": "Funding for Employment",
       "list_summary": "Municipal funding from the City of Toronto to encourage the hiring of local employees.",
-      "full_details": "The City of Toronto provides this grant on a rolling basis to non-profit organizations. The primary goal is to stimulate the local economy by encouraging and subsidizing the hiring of local employees.",
+      "full_details": "Funding for Employment - encourage local employees. The City of Toronto provides this grant on a rolling basis to non-profit organizations. The primary goal is to stimulate the local economy by encouraging and subsidizing the hiring of local employees.",
       "status": "Rolling Basis",
-      "deadline": null,
+      "application_open_date": "Rolling Basis",
+      "deadline": "Rolling Basis",
       "amount_max": 8700,
       "issuing_body": "City of Toronto",
-      "eligibility_tags": ["Employment", "Non-profit", "City"]
+      "grant_link": "www.allcornerstone.com",
+      "eligibility_tags": ["Non-profit"],
+      "industry_tags": ["Employment"],
+      "type_tags": ["City"]
     }
   ]
 }

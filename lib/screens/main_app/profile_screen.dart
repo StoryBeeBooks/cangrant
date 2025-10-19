@@ -7,8 +7,10 @@ import 'package:cangrant/screens/main_app/help_center_screen.dart';
 import 'package:cangrant/screens/main_app/privacy_policy_screen.dart';
 import 'package:cangrant/screens/main_app/terms_of_use_screen.dart';
 import 'package:cangrant/screens/main_app/about_screen.dart';
+import 'package:cangrant/screens/main_app/update_business_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:cangrant/services/saved_grants_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,20 +21,29 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
   String _selectedLanguage = 'English (US)';
+  int _savedGrantsCount = 0;
 
   @override
   void initState() {
     super.initState();
     _loadPreferences();
+    _loadSavedGrantsCount();
+  }
+
+  Future<void> _loadSavedGrantsCount() async {
+    final savedIds = await SavedGrantsService.getSavedGrantIds();
+    if (mounted) {
+      setState(() {
+        _savedGrantsCount = savedIds.length;
+      });
+    }
   }
 
   Future<void> _loadPreferences() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _notificationsEnabled = prefs.getBool('notifications') ?? true;
-      _darkModeEnabled = prefs.getBool('darkMode') ?? false;
       final languageCode = prefs.getString('language') ?? 'en';
       _selectedLanguage = languageCode == 'zh'
           ? 'Chinese (Simplified)'
@@ -46,15 +57,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _notificationsEnabled = value;
     });
-  }
-
-  Future<void> _saveDarkModePreference(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('darkMode', value);
-    setState(() {
-      _darkModeEnabled = value;
-    });
-    // TODO: Implement dark mode theme switching
   }
 
   Future<void> _signOut(BuildContext context) async {
@@ -173,13 +175,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    subtitle: const Text('0 grants saved'),
+                    subtitle: Text('$_savedGrantsCount grants saved'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SavedGrantsScreen(),
+                        ),
+                      );
+                      // Reload count when returning from saved grants screen
+                      _loadSavedGrantsCount();
+                    },
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 16),
+
+              // Update Business Profile Card
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 12,
+                    ),
+                    leading: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4CAF50).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(
+                        Icons.business_center,
+                        color: Color(0xFF4CAF50),
+                      ),
+                    ),
+                    title: const Text(
+                      'Update Business Profile',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    subtitle: const Text('Help grant recommendations'),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SavedGrantsScreen(),
+                          builder: (context) =>
+                              const UpdateBusinessProfileScreen(),
                         ),
                       );
                     },
@@ -244,40 +296,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               activeThumbColor: const Color(0xFF5E35B1),
                             ),
                           ),
-                          const Divider(height: 1),
-
-                          // Dark Mode
-                          ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 8,
-                            ),
-                            leading: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFCE93D8).withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.dark_mode,
-                                color: Color(0xFF8E24AA),
-                              ),
-                            ),
-                            title: Text(
-                              localizations.translate('dark_mode'),
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            subtitle: const Text('Appearance preference'),
-                            trailing: Switch(
-                              value: _darkModeEnabled,
-                              onChanged: _saveDarkModePreference,
-                              activeThumbColor: const Color(0xFF5E35B1),
-                            ),
-                          ),
-                          const Divider(height: 1),
 
                           // Language
                           ListTile(
@@ -540,17 +558,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                ),
-              ),
-
-              const SizedBox(height: 24),
-
-              // Your Saved Grants section at bottom
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(
-                  'Your Saved Grants',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
 

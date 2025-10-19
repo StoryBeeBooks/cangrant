@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cangrant/l10n/app_localizations.dart';
 
 class FilterDialog extends StatefulWidget {
   final List<String> allStatuses;
@@ -52,8 +53,39 @@ class _FilterDialogState extends State<FilterDialog> {
     });
   }
 
+  String _translateStatus(BuildContext context, String status) {
+    final localizations = AppLocalizations.of(context);
+    switch (status) {
+      case 'Open':
+        return localizations.translate('open');
+      case 'Closed':
+        return localizations.translate('closed');
+      case 'Coming Soon':
+        return localizations.translate('coming_soon');
+      case 'Rolling Basis':
+        return localizations.translate('rolling_basis');
+      default:
+        return status;
+    }
+  }
+
+  String _translateEligibility(BuildContext context, String tag) {
+    final localizations = AppLocalizations.of(context);
+    switch (tag) {
+      case 'Non-profit':
+        return localizations.translate('tag_nonprofit');
+      case 'Corporation':
+        return localizations.translate('tag_corporation');
+      case 'Charity':
+        return localizations.translate('tag_charity');
+      default:
+        return tag;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Container(
@@ -67,9 +99,12 @@ class _FilterDialogState extends State<FilterDialog> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Filters',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  Text(
+                    localizations.translate('filter_grants'),
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   IconButton(
                     icon: const Icon(Icons.close),
@@ -88,16 +123,16 @@ class _FilterDialogState extends State<FilterDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Status section
-                    const Text(
-                      'Status',
-                      style: TextStyle(
+                    Text(
+                      localizations.translate('grant_status'),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 12),
                     RadioListTile<String>(
-                      title: const Text('All Status'),
+                      title: Text(localizations.translate('all_statuses')),
                       value: 'All Status',
                       groupValue: _statusFilter,
                       onChanged: (value) {
@@ -109,7 +144,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     ),
                     ...widget.allStatuses.map((status) {
                       return CheckboxListTile(
-                        title: Text(status),
+                        title: Text(_translateStatus(context, status)),
                         value: _selectedStatuses.contains(status),
                         onChanged: (bool? value) {
                           setState(() {
@@ -127,16 +162,16 @@ class _FilterDialogState extends State<FilterDialog> {
                     const SizedBox(height: 24),
 
                     // Eligibility section
-                    const Text(
-                      'Eligibility',
-                      style: TextStyle(
+                    Text(
+                      localizations.translate('eligibility_criteria'),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 12),
                     RadioListTile<String>(
-                      title: const Text('All Eligibility'),
+                      title: Text(localizations.translate('all_eligibility')),
                       value: 'All Eligibility',
                       groupValue: _eligibilityFilter,
                       onChanged: (value) {
@@ -148,7 +183,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     ),
                     ...widget.allEligibilityTags.map((tag) {
                       return CheckboxListTile(
-                        title: Text(tag),
+                        title: Text(_translateEligibility(context, tag)),
                         value: _selectedEligibilityTags.contains(tag),
                         onChanged: (bool? value) {
                           setState(() {
@@ -182,9 +217,12 @@ class _FilterDialogState extends State<FilterDialog> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'Show Results',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  child: Text(
+                    localizations.translate('show_results'),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

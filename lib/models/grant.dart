@@ -6,10 +6,14 @@ class Grant {
   final String listSummary;
   final String fullDetails;
   final String status;
+  final String? applicationOpenDate;
   final String? deadline;
   final int amountMax;
   final String issuingBody;
+  final String grantLink;
   final List<String> eligibilityTags;
+  final List<String> industryTags;
+  final List<String> typeTags;
 
   Grant({
     required this.id,
@@ -17,10 +21,14 @@ class Grant {
     required this.listSummary,
     required this.fullDetails,
     required this.status,
+    this.applicationOpenDate,
     this.deadline,
     required this.amountMax,
     required this.issuingBody,
+    required this.grantLink,
     required this.eligibilityTags,
+    required this.industryTags,
+    required this.typeTags,
   });
 
   factory Grant.fromJson(Map<String, dynamic> json) {
@@ -30,11 +38,20 @@ class Grant {
       listSummary: json['list_summary'] as String,
       fullDetails: json['full_details'] as String,
       status: json['status'] as String,
+      applicationOpenDate: json['application_open_date'] as String?,
       deadline: json['deadline'] as String?,
       amountMax: json['amount_max'] as int,
       issuingBody: json['issuing_body'] as String,
+      grantLink: json['grant_link'] as String,
       eligibilityTags: List<String>.from(json['eligibility_tags'] as List),
+      industryTags: List<String>.from(json['industry_tags'] as List),
+      typeTags: List<String>.from(json['type_tags'] as List),
     );
+  }
+
+  // Get all tags combined for display
+  List<String> getAllTags() {
+    return [...eligibilityTags, ...industryTags, ...typeTags];
   }
 
   // Get color for status badge

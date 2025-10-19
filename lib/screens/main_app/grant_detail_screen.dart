@@ -3,6 +3,7 @@ import 'package:cangrant/models/grant.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:cangrant/services/saved_grants_service.dart';
 
 class GrantDetailScreen extends StatefulWidget {
   final Grant grant;
@@ -16,31 +17,52 @@ class GrantDetailScreen extends StatefulWidget {
 class _GrantDetailScreenState extends State<GrantDetailScreen> {
   bool _isSaved = false;
 
-  void _toggleSave() {
-    setState(() {
-      _isSaved = !_isSaved;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedState();
+  }
 
-    // Show snackbar with translated message
-    final localizations = AppLocalizations.of(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          _isSaved
-              ? localizations.translate('save')
-              : localizations.translate('unsave'),
+  Future<void> _loadSavedState() async {
+    final isSaved = await SavedGrantsService.isGrantSaved(widget.grant.id);
+    if (mounted) {
+      setState(() {
+        _isSaved = isSaved;
+      });
+    }
+  }
+
+  Future<void> _toggleSave() async {
+    final newState = await SavedGrantsService.toggleSave(widget.grant.id);
+    if (mounted) {
+      setState(() {
+        _isSaved = newState;
+      });
+
+      // Show snackbar with translated message
+      final localizations = AppLocalizations.of(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            _isSaved
+                ? localizations.translate('save')
+                : localizations.translate('unsave'),
+          ),
+          duration: const Duration(seconds: 1),
         ),
-        duration: const Duration(seconds: 1),
-      ),
-    );
-    // TODO: Persist save state
+      );
+    }
   }
 
   Future<void> _launchGrantWebsite() async {
-    // TODO: Add actual grant website URL to JSON
-    final Uri url = Uri.parse(
-      'https://www.canada.ca/en/services/business/grants.html',
-    );
+    // Use the grant link from the data
+    String urlString = widget.grant.grantLink;
+    // Add https:// if not present
+    if (!urlString.startsWith('http://') && !urlString.startsWith('https://')) {
+      urlString = 'https://$urlString';
+    }
+
+    final Uri url = Uri.parse(urlString);
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -151,7 +173,7 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                       runSpacing: 8,
                       children: [
                         _buildStatusChip(widget.grant.status),
-                        ...widget.grant.eligibilityTags.map(
+                        ...widget.grant.getAllTags().map(
                           (tag) => _buildTagChip(tag),
                         ),
                       ],
@@ -172,6 +194,20 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
 
                     const SizedBox(height: 16),
 
+                    // Application open date
+                    if (widget.grant.applicationOpenDate != null)
+                      _buildInfoCard(
+                        context,
+                        icon: Icons.event_available,
+                        iconColor: const Color(0xFF2196F3),
+                        iconBgColor: const Color(0xFF2196F3).withOpacity(0.1),
+                        title: localizations.translate('application_open_date'),
+                        value: _formatDate(widget.grant.applicationOpenDate!),
+                      ),
+
+                    if (widget.grant.applicationOpenDate != null)
+                      const SizedBox(height: 16),
+
                     // Application deadline
                     if (widget.grant.deadline != null)
                       _buildInfoCard(
@@ -182,48 +218,6 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
                         title: localizations.translate('deadline'),
                         value: _formatDate(widget.grant.deadline!),
                       ),
-
-                    const SizedBox(height: 32),
-
-                    // Status and Industry grid
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildGridItem(
-                            localizations.translate('status'),
-                            widget.grant.status,
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildGridItem(
-                            localizations.translate('eligibility'),
-                            _getIndustryFromTags(),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // Eligibility and Funding Level grid
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildGridItem(
-                            localizations.translate('eligibility'),
-                            _getEligibilityFromTags(),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: _buildGridItem(
-                            localizations.translate('issuing_body'),
-                            _getFundingLevelFromTags(),
-                          ),
-                        ),
-                      ],
-                    ),
 
                     const SizedBox(height: 32),
 
@@ -378,30 +372,6 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
     );
   }
 
-  Widget _buildGridItem(String label, String value) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFE0E0E0)),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(fontSize: 14, color: Color(0xFF757575)),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          ),
-        ],
-      ),
-    );
-  }
-
   String _formatDate(String dateStr) {
     try {
       final date = DateTime.parse(dateStr);
@@ -409,37 +379,5 @@ class _GrantDetailScreenState extends State<GrantDetailScreen> {
     } catch (e) {
       return dateStr;
     }
-  }
-
-  String _getIndustryFromTags() {
-    final industries = ['Art', 'Education', 'Environment', 'Employment'];
-    for (var tag in widget.grant.eligibilityTags) {
-      if (industries.any((i) => tag.toLowerCase().contains(i.toLowerCase()))) {
-        return tag;
-      }
-    }
-    return 'General';
-  }
-
-  String _getEligibilityFromTags() {
-    final eligibilities = ['Non-profit', 'Charity', 'For Corporations'];
-    for (var tag in widget.grant.eligibilityTags) {
-      if (eligibilities.any(
-        (e) => tag.toLowerCase().contains(e.toLowerCase()),
-      )) {
-        return tag;
-      }
-    }
-    return 'Open';
-  }
-
-  String _getFundingLevelFromTags() {
-    final levels = ['Federal', 'Provincial', 'City', 'Company'];
-    for (var tag in widget.grant.eligibilityTags) {
-      if (levels.any((l) => tag.toLowerCase().contains(l.toLowerCase()))) {
-        return tag;
-      }
-    }
-    return 'N/A';
   }
 }

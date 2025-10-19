@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/screens/main_app/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-class OnboardingFlow extends StatefulWidget {
-  const OnboardingFlow({super.key});
+class UpdateBusinessProfileScreen extends StatefulWidget {
+  const UpdateBusinessProfileScreen({super.key});
 
   @override
-  State<OnboardingFlow> createState() => _OnboardingFlowState();
+  State<UpdateBusinessProfileScreen> createState() =>
+      _UpdateBusinessProfileScreenState();
 }
 
-class _OnboardingFlowState extends State<OnboardingFlow> {
+class _UpdateBusinessProfileScreenState
+    extends State<UpdateBusinessProfileScreen> {
   int _currentStep = 0;
   final int _totalSteps = 9;
 
   // Store user's answers
-  final Map<String, dynamic> _answers = {};
+  Map<String, dynamic> _answers = {};
+  bool _isLoading = true;
 
   // Question configuration
   final List<Map<String, dynamic>> _questions = [
@@ -96,6 +98,28 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     {'title': 'Are you woman-owned?', 'key': 'woman_owned', 'type': 'boolean'},
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadExistingProfile();
+  }
+
+  Future<void> _loadExistingProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    final profileJson = prefs.getString('business_profile');
+
+    if (profileJson != null) {
+      setState(() {
+        _answers = Map<String, dynamic>.from(json.decode(profileJson));
+        _isLoading = false;
+      });
+    } else {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _nextStep() {
     if (_currentStep < _totalSteps - 1) {
       setState(() {
@@ -115,15 +139,17 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   }
 
   Future<void> _saveProfile() async {
-    // Save profile to SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('business_profile', json.encode(_answers));
 
-    // Navigate to main screen
     if (mounted) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainScreen()),
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Business profile updated successfully!'),
+          backgroundColor: Colors.green,
+        ),
       );
+      Navigator.pop(context);
     }
   }
 
@@ -152,6 +178,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: options.map((option) {
+        final isSelected = _answers[key] == option;
         return Padding(
           padding: const EdgeInsets.only(bottom: 12.0),
           child: ElevatedButton(
@@ -159,16 +186,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               setState(() {
                 _answers[key] = option;
               });
-              _nextStep();
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 20),
-              backgroundColor: _answers[key] == option
-                  ? Theme.of(context).primaryColor
+              backgroundColor: isSelected
+                  ? const Color(0xFF5E35B1)
                   : Colors.grey[200],
-              foregroundColor: _answers[key] == option
-                  ? Colors.white
-                  : Colors.black,
+              foregroundColor: isSelected ? Colors.white : Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -185,8 +209,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     final key = question['key'] as String;
 
     return DropdownButtonFormField<String>(
-      initialValue: _answers[key],
-      decoration: const InputDecoration(border: OutlineInputBorder()),
+      value: _answers[key],
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+        fillColor: Colors.grey[100],
+      ),
       items: options.map((option) {
         return DropdownMenuItem(value: option, child: Text(option));
       }).toList(),
@@ -205,7 +233,9 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     return TextFormField(
       initialValue: _answers[key],
       decoration: InputDecoration(
-        border: const OutlineInputBorder(),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        filled: true,
+        fillColor: Colors.grey[100],
         hintText: hint,
       ),
       onChanged: (value) {
@@ -226,12 +256,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               setState(() {
                 _answers[key] = true;
               });
-              _nextStep();
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 20),
               backgroundColor: _answers[key] == true
-                  ? Theme.of(context).primaryColor
+                  ? const Color(0xFF5E35B1)
                   : Colors.grey[200],
               foregroundColor: _answers[key] == true
                   ? Colors.white
@@ -250,12 +279,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               setState(() {
                 _answers[key] = false;
               });
-              _nextStep();
             },
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 20),
               backgroundColor: _answers[key] == false
-                  ? Theme.of(context).primaryColor
+                  ? const Color(0xFF5E35B1)
                   : Colors.grey[200],
               foregroundColor: _answers[key] == false
                   ? Colors.white
@@ -273,17 +301,21 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+
     final question = _questions[_currentStep];
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Step ${_currentStep + 1} of $_totalSteps'),
-        leading: _currentStep > 0
-            ? IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: _previousStep,
-              )
-            : null,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: _currentStep > 0
+              ? _previousStep
+              : () => Navigator.pop(context),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -292,7 +324,13 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Progress bar
-              LinearProgressIndicator(value: (_currentStep + 1) / _totalSteps),
+              LinearProgressIndicator(
+                value: (_currentStep + 1) / _totalSteps,
+                backgroundColor: Colors.grey[200],
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color(0xFF5E35B1),
+                ),
+              ),
               const SizedBox(height: 32),
 
               // Question title
@@ -311,24 +349,27 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               ),
 
               // Next button for non-option questions
-              if (question['type'] != 'options' &&
-                  question['type'] != 'boolean')
-                Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
-                  child: ElevatedButton(
-                    onPressed: _nextStep,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+              Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ElevatedButton(
+                  onPressed: _nextStep,
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: const Color(0xFF5E35B1),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      _currentStep < _totalSteps - 1 ? 'Next' : 'Complete',
-                      style: const TextStyle(fontSize: 16),
+                  ),
+                  child: Text(
+                    _currentStep < _totalSteps - 1 ? 'Next' : 'Save Profile',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
+              ),
             ],
           ),
         ),

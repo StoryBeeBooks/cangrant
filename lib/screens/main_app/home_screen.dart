@@ -33,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (mounted) {
         setState(() {
           _allGrants = grants;
-          _filteredGrants = grants;
+          _filteredGrants = List.from(grants);
+          _sortGrants(); // Apply sorting on initial load
           _isLoading = false;
         });
       }
@@ -59,14 +60,57 @@ class _HomeScreenState extends State<HomeScreen> {
             ? null
             : _selectedEligibilityTags,
       );
+      // Apply custom sorting after filtering
+      _sortGrants();
+    });
+  }
+
+  void _sortGrants() {
+    _filteredGrants.sort((a, b) {
+      // Priority order: Open -> Rolling Basis -> Coming Soon -> Closed
+      final statusPriority = {
+        'Open': 1,
+        'Rolling Basis': 2,
+        'Coming Soon': 3,
+        'Closed': 4,
+      };
+
+      final aPriority = statusPriority[a.status] ?? 999;
+      final bPriority = statusPriority[b.status] ?? 999;
+
+      // First, sort by status priority
+      if (aPriority != bPriority) {
+        return aPriority.compareTo(bPriority);
+      }
+
+      // If both are "Open", sort by deadline (closest first)
+      if (a.status == 'Open' && b.status == 'Open') {
+        if (a.deadline != null && b.deadline != null) {
+          try {
+            final aDate = DateTime.parse(a.deadline!);
+            final bDate = DateTime.parse(b.deadline!);
+            return aDate.compareTo(bDate); // Earlier dates first
+          } catch (e) {
+            // If parsing fails, maintain current order
+            return 0;
+          }
+        }
+        // If one has deadline and other doesn't, prioritize the one with deadline
+        if (a.deadline != null) return -1;
+        if (b.deadline != null) return 1;
+      }
+
+      // For same status but not Open, maintain current order
+      return 0;
     });
   }
 
   Future<void> _showFilterDialog() async {
-    final allStatuses = GrantService.getAllStatuses(_allGrants).toList()
-      ..sort();
-    final allTags = GrantService.getAllEligibilityTags(_allGrants).toList()
-      ..sort();
+    // Predefined status options
+    final allStatuses = ['Open', 'Closed', 'Coming Soon', 'Rolling Basis'];
+
+    // Predefined eligibility options (only these 3)
+    final allTags = ['Non-profit', 'Corporation', 'Charity'];
 
     final result = await showDialog<Map<String, List<String>>>(
       context: context,
@@ -255,15 +299,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 12),
 
-              // Tags
+              // Tags - show status first, then all other tags
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
                 children: [
                   _buildStatusChip(grant),
-                  ...grant.eligibilityTags
-                      .take(3)
-                      .map((tag) => _buildTagChip(grant, tag)),
+                  ...grant.getAllTags().map((tag) => _buildTagChip(grant, tag)),
                 ],
               ),
 
