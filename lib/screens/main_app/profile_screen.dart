@@ -85,9 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final localizations = AppLocalizations.of(context);
     final supabaseService = SupabaseService();
     final user = supabaseService.getCurrentUser();
-    final userEmail = user?.email ?? 'sarah.chen@example.com';
-    final userName =
-        user?.email?.split('@')[0].replaceAll('.', ' ') ?? 'Sarah Chen';
+    final userEmail = user?.email ?? 'user@example.com';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
@@ -126,17 +124,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      userName,
+                      userEmail,
                       style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      userEmail,
-                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ],
                 ),
