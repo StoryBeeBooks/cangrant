@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    
     <application
-        android:label="cangrant"
+        android:label="CanGrant"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
