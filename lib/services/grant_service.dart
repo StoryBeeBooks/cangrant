@@ -37,17 +37,20 @@ class GrantService {
       // Convert response to Grant objects
       final grants = (response as List).map((grantData) {
         // Extract tags from the nested structure
-        final eligibilityTags = (grantData['grant_eligibility'] as List?)
+        final eligibilityTags =
+            (grantData['grant_eligibility'] as List?)
                 ?.map((e) => e['eligibility_tags']['name'] as String)
                 .toList() ??
             [];
 
-        final industryTags = (grantData['grant_industries'] as List?)
+        final industryTags =
+            (grantData['grant_industries'] as List?)
                 ?.map((e) => e['industry_tags']['name'] as String)
                 .toList() ??
             [];
 
-        final typeTags = (grantData['grant_types'] as List?)
+        final typeTags =
+            (grantData['grant_types'] as List?)
                 ?.map((e) => e['type_tags']['name'] as String)
                 .toList() ??
             [];

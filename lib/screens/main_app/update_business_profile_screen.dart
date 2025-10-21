@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mygrants/services/supabase_service.dart';
 import 'dart:convert';
 
 class UpdateBusinessProfileScreen extends StatefulWidget {
@@ -139,17 +140,40 @@ class _UpdateBusinessProfileScreenState
   }
 
   Future<void> _saveProfile() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('business_profile', json.encode(_answers));
+    try {
+      // Save to local storage (for offline access)
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('business_profile', json.encode(_answers));
 
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Business profile updated successfully!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
+      // Save to Supabase database
+      final supabaseService = SupabaseService();
+      final userId = supabaseService.getCurrentUser()?.id;
+
+      if (userId != null) {
+        await supabaseService.client
+            .from('profiles')
+            .update({'business_profile': _answers})
+            .eq('user_id', userId);
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Business profile updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error saving profile: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -209,7 +233,7 @@ class _UpdateBusinessProfileScreenState
     final key = question['key'] as String;
 
     return DropdownButtonFormField<String>(
-      value: _answers[key],
+      initialValue: _answers[key],
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         filled: true,
