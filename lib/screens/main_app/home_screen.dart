@@ -145,7 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Debug: Check if user is logged in
     final currentUser = supabaseService.getCurrentUser();
-    print('DEBUG PAYWALL: User logged in: ${currentUser?.email ?? 'NOT LOGGED IN'}');
+    print(
+      'DEBUG PAYWALL: User logged in: ${currentUser?.email ?? 'NOT LOGGED IN'}',
+    );
 
     // Check if user has active subscription
     final hasSubscription = await supabaseService.hasActiveSubscription();

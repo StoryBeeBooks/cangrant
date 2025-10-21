@@ -1,4 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'dart:io';
 
 class SupabaseService {
   static final SupabaseService _instance = SupabaseService._internal();
@@ -55,6 +58,81 @@ class SupabaseService {
   // Reset password
   Future<void> resetPassword(String email) async {
     await client.auth.resetPasswordForEmail(email);
+  }
+
+  // ============================================
+  // Social Authentication - Google Sign-In
+  // ============================================
+
+  Future<AuthResponse> signInWithGoogle() async {
+    try {
+      // Initialize Google Sign-In
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        serverClientId: Platform.isAndroid
+            ? 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com' // TODO: Replace with actual Android client ID
+            : null,
+      );
+
+      // Trigger Google Sign-In flow
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser == null) {
+        throw Exception('Google sign-in was cancelled');
+      }
+
+      // Get authentication details
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final String? idToken = googleAuth.idToken;
+      final String? accessToken = googleAuth.accessToken;
+
+      if (idToken == null) {
+        throw Exception('Failed to get Google ID token');
+      }
+
+      // Sign in to Supabase with Google credentials
+      final response = await client.auth.signInWithIdToken(
+        provider: OAuthProvider.google,
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+
+      return response;
+    } catch (e) {
+      print('Google Sign-In Error: $e');
+      throw Exception('Google sign-in failed: $e');
+    }
+  }
+
+  // ============================================
+  // Social Authentication - Apple Sign-In
+  // ============================================
+
+  Future<AuthResponse> signInWithApple() async {
+    try {
+      // Trigger Apple Sign-In flow
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      if (credential.identityToken == null) {
+        throw Exception('Failed to get Apple ID token');
+      }
+
+      // Sign in to Supabase with Apple credentials
+      final response = await client.auth.signInWithIdToken(
+        provider: OAuthProvider.apple,
+        idToken: credential.identityToken!,
+      );
+
+      return response;
+    } catch (e) {
+      print('Apple Sign-In Error: $e');
+      throw Exception('Apple sign-in failed: $e');
+    }
   }
 
   // ============================================
