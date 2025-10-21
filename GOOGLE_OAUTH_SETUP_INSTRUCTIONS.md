@@ -27,7 +27,7 @@ C1:F9:7A:0F:63:F2:9A:6D:38:83:FD:70:5B:C3:78:A5:CE:DA:8B:83
 2. **Click "NEW PROJECT"** button (top right of the dialog)
 3. **Fill in:**
    - **Project name:** `My-Grants App`
-   - **Organization:** Leave as "No organization"
+   - **Organization:** Select `nridl.org` from dropdown
 4. **Click "CREATE"**
 5. **Wait ~30 seconds** for project to be created
 6. **Click "SELECT PROJECT"** when it appears
@@ -65,7 +65,7 @@ C1:F9:7A:0F:63:F2:9A:6D:38:83:FD:70:5B:C3:78:A5:CE:DA:8B:83
 
 **App information:**
 - **App name:** `My-Grants`
-- **User support email:** `marioxu@yahoo.ca` (select from dropdown)
+- **User support email:** `support@nridl.org` (select from dropdown)
 - **App logo:** SKIP (leave empty)
 
 **App domain:**
@@ -76,7 +76,7 @@ C1:F9:7A:0F:63:F2:9A:6D:38:83:FD:70:5B:C3:78:A5:CE:DA:8B:83
 *Note: These pages don't exist yet - that's okay for testing mode*
 
 **Developer contact information:**
-- **Email addresses:** `marioxu@yahoo.ca`
+- **Email addresses:** `support@nridl.org`
 
 **Click "SAVE AND CONTINUE"**
 
