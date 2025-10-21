@@ -445,3 +445,13 @@ LEFT JOIN grant_types gt ON g.id = gt.grant_id
 LEFT JOIN type_tags tt ON gt.tag_id = tt.id
 GROUP BY g.id, g.title
 ORDER BY g.id;
+
+-- ============================================================================
+-- STEP 10: MAKE YOURSELF ADMIN
+-- NOTE: This will only work if you've already signed up in the app!
+-- If you haven't signed up yet: run the app, create an account, then run this
+-- ============================================================================
+
+UPDATE profiles 
+SET role = 'admin' 
+WHERE email = 'marioxu@yahoo.ca';
