@@ -1,28 +1,87 @@
-import 'dart:convert';
-import 'package:flutter/services.dart';
 import 'package:mygrants/models/grant.dart';
+import 'package:mygrants/services/supabase_service.dart';
 
 class GrantService {
   static List<Grant>? _cachedGrants;
+  static final _supabase = SupabaseService();
 
-  static Future<List<Grant>> loadGrants() async {
-    if (_cachedGrants != null) {
+  /// Load grants from Supabase database
+  static Future<List<Grant>> loadGrants({bool forceRefresh = false}) async {
+    // Return cached grants if available and not forcing refresh
+    if (_cachedGrants != null && !forceRefresh) {
       return _cachedGrants!;
     }
 
     try {
-      final String jsonString = await rootBundle.loadString(
-        'assets/data/grants.json',
-      );
-      final Map<String, dynamic> jsonData = json.decode(jsonString);
-      final List<dynamic> grantsJson = jsonData['grants'] as List;
+      // Fetch grants with all their tags from Supabase
+      final response = await _supabase.client
+          .from('grants')
+          .select('''
+            id,
+            title,
+            list_summary,
+            full_details,
+            status,
+            application_open_date,
+            deadline,
+            amount_max,
+            issuing_body,
+            grant_link,
+            grant_eligibility!inner(eligibility_tags(name)),
+            grant_industries!inner(industry_tags(name)),
+            grant_types!inner(type_tags(name))
+          ''')
+          .eq('is_active', true)
+          .order('updated_at', ascending: false);
 
-      _cachedGrants = grantsJson.map((json) => Grant.fromJson(json)).toList();
-      return _cachedGrants!;
+      // Convert response to Grant objects
+      final grants = (response as List).map((grantData) {
+        // Extract tags from the nested structure
+        final eligibilityTags = (grantData['grant_eligibility'] as List?)
+                ?.map((e) => e['eligibility_tags']['name'] as String)
+                .toList() ??
+            [];
+
+        final industryTags = (grantData['grant_industries'] as List?)
+                ?.map((e) => e['industry_tags']['name'] as String)
+                .toList() ??
+            [];
+
+        final typeTags = (grantData['grant_types'] as List?)
+                ?.map((e) => e['type_tags']['name'] as String)
+                .toList() ??
+            [];
+
+        // Create Grant object with database data
+        return Grant(
+          id: grantData['id'] as int,
+          title: grantData['title'] as String,
+          listSummary: grantData['list_summary'] as String,
+          fullDetails: grantData['full_details'] as String,
+          status: grantData['status'] as String,
+          applicationOpenDate: grantData['application_open_date'] as String?,
+          deadline: grantData['deadline'] as String?,
+          amountMax: grantData['amount_max'] as int,
+          issuingBody: grantData['issuing_body'] as String,
+          grantLink: grantData['grant_link'] as String,
+          eligibilityTags: eligibilityTags,
+          industryTags: industryTags,
+          typeTags: typeTags,
+        );
+      }).toList();
+
+      // Cache the results
+      _cachedGrants = grants;
+      return grants;
     } catch (e) {
-      print('Error loading grants: $e');
+      print('Error loading grants from database: $e');
       return [];
     }
+  }
+
+  /// Clear the cache to force fresh data on next load
+  static void clearCache() {
+    _cachedGrants = null;
   }
 
   static List<Grant> filterGrants({
