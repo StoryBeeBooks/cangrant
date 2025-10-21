@@ -34,7 +34,7 @@
 
 ### **Step 1: Rename GitHub Repository (5 minutes)**
 
-1. Go to [https://github.com/StoryBeeBooks/cangrant/settings](https://github.com/StoryBeeBooks/cangrant/settings)
+1. Go to [https://github.com/StoryBeeBooks/mygrantsapp/settings](https://github.com/StoryBeeBooks/mygrantsapp/settings)
 2. Scroll to "Repository name"
 3. Change to: **`mygrants`**
 4. Click "Rename"
@@ -42,7 +42,7 @@
 
 ```powershell
 cd C:\src\cangrant
-git remote set-url origin https://github.com/StoryBeeBooks/mygrants.git
+git remote set-url origin https://github.com/StoryBeeBooks/mygrantsapp.git
 ```
 
 **See full guide:** `GITHUB_RENAME_GUIDE.md`

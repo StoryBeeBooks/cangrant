@@ -19,7 +19,7 @@ Copy this checklist and check off items as you complete them!
 
 ### Rename GitHub Repository
 
-1. [ ] Go to https://github.com/StoryBeeBooks/cangrant/settings
+1. [ ] Go to https://github.com/StoryBeeBooks/mygrantsapp/settings
 2. [ ] Scroll to "Repository name" section
 3. [ ] Type: **mygrants**
 4. [ ] Click "Rename" button
@@ -27,7 +27,7 @@ Copy this checklist and check off items as you complete them!
 
 ```powershell
 cd C:\src\cangrant
-git remote set-url origin https://github.com/StoryBeeBooks/mygrants.git
+git remote set-url origin https://github.com/StoryBeeBooks/mygrantsapp.git
 git pull
 ```
 

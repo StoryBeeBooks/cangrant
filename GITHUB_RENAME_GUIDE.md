@@ -12,7 +12,7 @@ GitHub makes repository renaming super simple, and it **automatically redirects*
 
 #### **Step 1: Go to Repository Settings**
 
-1. Go to [https://github.com/StoryBeeBooks/cangrant](https://github.com/StoryBeeBooks/cangrant)
+1. Go to [https://github.com/StoryBeeBooks/mygrantsapp](https://github.com/StoryBeeBooks/mygrantsapp)
 2. Click the **"Settings"** tab (at the top right of the repo page)
 3. Scroll down to the **"Repository name"** section (near the top)
 
@@ -24,10 +24,10 @@ GitHub makes repository renaming super simple, and it **automatically redirects*
 
 #### **Step 3: Done! ✅**
 
-Your repository is now at: `https://github.com/StoryBeeBooks/mygrants`
+Your repository is now at: `https://github.com/StoryBeeBooks/mygrantsapp`
 
 **Old URL still works!** GitHub auto-redirects:
-- `https://github.com/StoryBeeBooks/cangrant` → `https://github.com/StoryBeeBooks/mygrants`
+- `https://github.com/StoryBeeBooks/mygrantsapp` → `https://github.com/StoryBeeBooks/mygrantsapp`
 
 ---
 
@@ -39,14 +39,14 @@ After renaming on GitHub, update your local repo to point to the new URL:
 
 ```powershell
 cd C:\src\cangrant
-git remote set-url origin https://github.com/StoryBeeBooks/mygrants.git
+git remote set-url origin https://github.com/StoryBeeBooks/mygrantsapp.git
 git remote -v  # Verify it changed
 ```
 
 **Expected output:**
 ```
-origin  https://github.com/StoryBeeBooks/mygrants.git (fetch)
-origin  https://github.com/StoryBeeBooks/mygrants.git (push)
+origin  https://github.com/StoryBeeBooks/mygrantsapp.git (fetch)
+origin  https://github.com/StoryBeeBooks/mygrantsapp.git (push)
 ```
 
 ### **Option B: Next Time You Push**
@@ -106,7 +106,7 @@ After renaming, update these:
 ### 1. **Your Local Git Remote** (see above)
 
 ```powershell
-git remote set-url origin https://github.com/StoryBeeBooks/mygrants.git
+git remote set-url origin https://github.com/StoryBeeBooks/mygrantsapp.git
 ```
 
 ### 2. **CI/CD Pipelines** (if you have them)
@@ -174,7 +174,7 @@ If you get stuck, the exact commands are:
 ```powershell
 # After renaming on GitHub:
 cd C:\src\cangrant
-git remote set-url origin https://github.com/StoryBeeBooks/mygrants.git
+git remote set-url origin https://github.com/StoryBeeBooks/mygrantsapp.git
 git pull  # Test it works
 
 # Optional: Rename local folder
