@@ -86,22 +86,51 @@ Create policies that allow anyone to read all tag tables and junction tables.
 
 ---
 
-## REQUIREMENT 3: Create Admin System
+## REQUIREMENT 3: Create Profiles Table (User Data)
 
 **Prompt for AI:**
 
 ```
-I have an existing "profiles" table. Add the following to it:
+Create a PostgreSQL table called "profiles" with the following structure:
 
-Add a new column called "role" with these properties:
-- Type: text
-- Default value: 'user'
-- Must be one of: 'user' or 'admin'
-- Check constraint to enforce allowed values
+- user_id: UUID primary key, references auth.users(id) with cascade delete
+- email: text (user's email address)
+- business_profile: jsonb (stores business questionnaire data)
+- free_views_remaining: integer, default 3 (for metered paywall)
+- subscription_tier: text, optional, must be one of: 'free', 'premium', 'pro'
+- subscription_expires_at: timestamp with timezone, optional
+- role: text, default 'user', must be one of: 'user' or 'admin'
+- created_at: timestamp with timezone, default now()
+- updated_at: timestamp with timezone, default now()
 
-Check if the role column already exists before adding it (use IF NOT EXISTS logic).
+Add check constraints:
+- subscription_tier must be 'free', 'premium', or 'pro' if not null
+- role must be 'user' or 'admin'
 
-Then create policies for the grants table:
+Enable Row Level Security (RLS) on this table.
+
+Create these policies:
+1. Users can view their own profile (SELECT where auth.uid() = user_id)
+2. Users can update their own profile (UPDATE where auth.uid() = user_id)
+3. Users can insert their own profile (INSERT where auth.uid() = user_id)
+
+Create a trigger function that automatically creates a profile record when a new user signs up in auth.users.
+The trigger should:
+- Insert a new row in profiles with user_id = NEW.id and email = NEW.email
+- Set default values for free_views_remaining (3) and role ('user')
+- Run AFTER INSERT on auth.users
+```
+
+---
+
+## REQUIREMENT 4: Create Admin System
+
+**Prompt for AI:**
+
+```
+Now that the profiles table exists, create admin policies for managing grants.
+
+Create policies for the grants table:
 - Only users with role = 'admin' can INSERT, UPDATE, or DELETE grants
 - The admin check should use: EXISTS (SELECT 1 FROM profiles WHERE profiles.user_id = auth.uid() AND profiles.role = 'admin')
 
@@ -116,7 +145,7 @@ Create similar admin-only modification policies for:
 
 ---
 
-## REQUIREMENT 4: Insert Initial Tag Data
+## REQUIREMENT 5: Insert Initial Tag Data
 
 **Prompt for AI:**
 
@@ -143,7 +172,7 @@ Type tags:
 
 ---
 
-## REQUIREMENT 5: Insert Sample Grant Data
+## REQUIREMENT 6: Insert Sample Grant Data
 
 **Prompt for AI:**
 
@@ -208,7 +237,7 @@ After inserting grants, link them to their tags using the junction tables:
 
 ---
 
-## REQUIREMENT 6: Create Query Helper Function (Optional)
+## REQUIREMENT 7: Create Query Helper Function (Optional)
 
 **Prompt for AI:**
 
@@ -243,7 +272,7 @@ This will make it easier for the Flutter app to fetch grants with all their tags
 5. Review the generated SQL
 6. Click "Run" to execute
 
-**Do them IN ORDER** (1 through 6) because later requirements depend on earlier ones!
+**Do them IN ORDER** (1 through 7) because later requirements depend on earlier ones!
 
 ### Option B: Manual Approach
 
@@ -308,6 +337,6 @@ Should show each grant with its eligibility tags.
 
 ## What If AI Doesn't Understand?
 
-If Supabase AI struggles with any requirement, tell me which one (1-6) and I'll give you the exact SQL code for that specific part.
+If Supabase AI struggles with any requirement, tell me which one (1-7) and I'll give you the exact SQL code for that specific part.
 
 Good luck! 🚀
