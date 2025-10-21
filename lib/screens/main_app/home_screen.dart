@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cangrant/models/grant.dart';
 import 'package:cangrant/services/grant_service.dart';
+import 'package:cangrant/services/supabase_service.dart';
 import 'package:cangrant/screens/main_app/filter_dialog.dart';
 import 'package:cangrant/screens/main_app/grant_detail_screen.dart';
+import 'package:cangrant/screens/paywall/metered_paywall_screen.dart';
 import 'package:cangrant/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
@@ -138,11 +140,74 @@ class _HomeScreenState extends State<HomeScreen> {
     _applyFilters();
   }
 
-  void _openGrantDetail(Grant grant) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => GrantDetailScreen(grant: grant)),
-    );
+  Future<void> _openGrantDetail(Grant grant) async {
+    final supabaseService = SupabaseService();
+  
+    // Check if user has active subscription
+    final hasSubscription = await supabaseService.hasActiveSubscription();
+  
+    if (hasSubscription) {
+      // Premium user - direct access
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GrantDetailScreen(grant: grant),
+          ),
+        );
+      }
+      return;
+    }
+  
+    // Free user - check view count
+    final freeViewsRemaining = await supabaseService.getFreeViewsRemaining();
+  
+    if (freeViewsRemaining > 0) {
+      // Has free views left - allow access and decrement
+      final newCount = await supabaseService.decrementFreeViews();
+    
+      // Show subtle notification
+      if (mounted && newCount > 0) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$newCount free view${newCount == 1 ? '' : 's'} remaining'),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.orange[700],
+          ),
+        );
+      }
+    
+      // Navigate to detail
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GrantDetailScreen(grant: grant),
+          ),
+        );
+      }
+    } else {
+      // No free views left - show paywall
+      if (mounted) {
+        final result = await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const MeteredPaywallScreen(viewsUsed: 3),
+          ),
+        );
+      
+        // If user subscribed, refresh and allow access
+        if (result == true && mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => GrantDetailScreen(grant: grant),
+            ),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -321,7 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    '${_formatNumber(grant.amountMax)}',
+                    _formatNumber(grant.amountMax),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

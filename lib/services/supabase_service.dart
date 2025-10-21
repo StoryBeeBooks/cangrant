@@ -56,4 +56,100 @@ class SupabaseService {
   Future<void> resetPassword(String email) async {
     await client.auth.resetPasswordForEmail(email);
   }
+
+  // ============================================
+  // Metered Paywall - Free Views Tracking
+  // ============================================
+
+  // Get user's remaining free views
+  Future<int> getFreeViewsRemaining() async {
+    try {
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) return 0;
+
+      final response = await client
+          .from('profiles')
+          .select('free_views_remaining')
+          .eq('user_id', userId)
+          .single();
+
+      return response['free_views_remaining'] ?? 3;
+    } catch (e) {
+      print('Error getting free views: $e');
+      // Default to 3 if profile doesn't exist yet
+      return 3;
+    }
+  }
+
+  // Decrement free views count
+  Future<int> decrementFreeViews() async {
+    try {
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) return 0;
+
+      // Get current count
+      final current = await getFreeViewsRemaining();
+
+      if (current <= 0) return 0;
+
+      final newCount = current - 1;
+
+      // Update database
+      await client
+          .from('profiles')
+          .update({'free_views_remaining': newCount})
+          .eq('user_id', userId);
+
+      return newCount;
+    } catch (e) {
+      print('Error decrementing free views: $e');
+      return 0;
+    }
+  }
+
+  // Check if user has active subscription
+  Future<bool> hasActiveSubscription() async {
+    try {
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) return false;
+
+      final response = await client
+          .from('profiles')
+          .select('subscription_tier, subscription_expires_at')
+          .eq('user_id', userId)
+          .single();
+
+      final tier = response['subscription_tier'] as String?;
+      final expiresAt = response['subscription_expires_at'] as String?;
+
+      // Check if premium tier
+      if (tier != 'premium' && tier != 'pro') return false;
+
+      // Check if not expired
+      if (expiresAt != null) {
+        final expiryDate = DateTime.parse(expiresAt);
+        if (expiryDate.isBefore(DateTime.now())) return false;
+      }
+
+      return true;
+    } catch (e) {
+      print('Error checking subscription: $e');
+      return false;
+    }
+  }
+
+  // Reset free views (for testing or monthly reset)
+  Future<void> resetFreeViews({int count = 3}) async {
+    try {
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) return;
+
+      await client
+          .from('profiles')
+          .update({'free_views_remaining': count})
+          .eq('user_id', userId);
+    } catch (e) {
+      print('Error resetting free views: $e');
+    }
+  }
 }
