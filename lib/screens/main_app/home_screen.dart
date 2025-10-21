@@ -143,8 +143,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _openGrantDetail(Grant grant) async {
     final supabaseService = SupabaseService();
 
+    // Debug: Check if user is logged in
+    final currentUser = supabaseService.getCurrentUser();
+    print('DEBUG PAYWALL: User logged in: ${currentUser?.email ?? 'NOT LOGGED IN'}');
+
     // Check if user has active subscription
     final hasSubscription = await supabaseService.hasActiveSubscription();
+    print('DEBUG PAYWALL: Has subscription: $hasSubscription');
 
     if (hasSubscription) {
       // Premium user - direct access
@@ -161,6 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // Free user - check view count
     final freeViewsRemaining = await supabaseService.getFreeViewsRemaining();
+    print('DEBUG PAYWALL: Free views remaining: $freeViewsRemaining');
 
     if (freeViewsRemaining > 0) {
       // Has free views left - allow access and decrement

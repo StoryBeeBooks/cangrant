@@ -156,7 +156,9 @@ class _UpdateBusinessProfileScreenState
 
       print('DEBUG: Saving business profile for user: $userId');
       print('DEBUG: Profile data: $_answers');
-      print('DEBUG: Auth session: ${supabaseService.client.auth.currentSession?.user.email}');
+      print(
+        'DEBUG: Auth session: ${supabaseService.client.auth.currentSession?.user.email}',
+      );
 
       // Try the update with better error handling
       try {
@@ -166,7 +168,7 @@ class _UpdateBusinessProfileScreenState
             .eq('user_id', userId)
             .select()
             .single();
-        
+
         print('DEBUG: Update successful! Response: $response');
       } catch (dbError) {
         print('DEBUG: Database error: $dbError');
@@ -188,14 +190,13 @@ class _UpdateBusinessProfileScreenState
       print('DEBUG: Stack trace: $stackTrace');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: Colors.red,
-          ),
+          SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
         );
       }
     }
-  }  Widget _buildQuestionWidget() {
+  }
+
+  Widget _buildQuestionWidget() {
     final question = _questions[_currentStep];
     final String type = question['type'];
 
