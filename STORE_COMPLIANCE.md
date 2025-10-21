@@ -4,18 +4,18 @@
 
 ### Android
 - ✅ Added INTERNET permission to AndroidManifest.xml
-- ✅ Changed app label from "cangrant" to "CanGrant"
+- ✅ Changed app label from "My-Grants" to "My-Grants"
 - ✅ Added proper app description in pubspec.yaml
 
 ### iOS
-- ✅ Changed display name from "Cangrant" to "CanGrant"
+- ✅ Changed display name from "My-Grants" to "My-Grants"
 - ✅ Updated app description
 
 ## 🚨 CRITICAL: Must Fix Before Submission
 
 ### 1. Change Package Name (REQUIRED)
-**Current:** `com.example.cangrant`  
-**Required:** `com.yourcompany.cangrant` or `com.storybee.cangrant`
+**Current:** `com.example.My-Grants`  
+**Required:** `com.yourcompany.My-Grants` or `com.storybee.My-Grants`
 
 **Why:** Apple and Google reject apps with "com.example" package names.
 
@@ -50,13 +50,13 @@
 **Action needed:**
 1. Generate release keystore:
    ```bash
-   keytool -genkey -v -keystore ~/cangrant-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias cangrant
+   keytool -genkey -v -keystore ~/My-Grants-release-key.jks -keyalg RSA -keysize 2048 -validity 10000 -alias My-Grants
    ```
 2. Create `android/key.properties`:
    ```
    storePassword=<password>
    keyPassword=<password>
-   keyAlias=cangrant
+   keyAlias=My-Grants
    storeFile=<path-to-keystore>
    ```
 3. Update `android/app/build.gradle.kts` to use release signing
@@ -64,7 +64,7 @@
 ### 5. App Store Metadata (REQUIRED)
 
 **For Apple App Store Connect:**
-- App Name: CanGrant
+- App Name: My-Grants
 - Subtitle: Find Canadian Grants & Funding
 - Description: (200-300 words describing the app)
 - Keywords: grants, funding, canada, business, nonprofit, government
@@ -74,7 +74,7 @@
 - Privacy Policy URL: [MUST PROVIDE]
 
 **For Google Play Console:**
-- App Name: CanGrant
+- App Name: My-Grants
 - Short Description: Discover Canadian government grants and funding opportunities
 - Full Description: (4000 char max, describe features)
 - Category: Business
@@ -222,7 +222,7 @@
 - Google Play Store: 1-7 days (first submission may take longer)
 
 ## 📧 Support Email
-Required for both stores. Recommendation: support@cangrant.ca or similar
+Required for both stores. Recommendation: support@My-Grants.ca or similar
 
 ## 💰 Pricing
 Currently free app with no in-app purchases.

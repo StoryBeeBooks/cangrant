@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/services/supabase_service.dart';
-import 'package:cangrant/screens/pre_login/auth_screen.dart';
-import 'package:cangrant/screens/main_app/saved_grants_screen.dart';
-import 'package:cangrant/screens/main_app/language_screen.dart';
-import 'package:cangrant/screens/main_app/help_center_screen.dart';
-import 'package:cangrant/screens/main_app/privacy_policy_screen.dart';
-import 'package:cangrant/screens/main_app/terms_of_use_screen.dart';
-import 'package:cangrant/screens/main_app/about_screen.dart';
-import 'package:cangrant/screens/main_app/update_business_profile_screen.dart';
+import 'package:mygrants/services/supabase_service.dart';
+import 'package:mygrants/screens/pre_login/auth_screen.dart';
+import 'package:mygrants/screens/main_app/saved_grants_screen.dart';
+import 'package:mygrants/screens/main_app/language_screen.dart';
+import 'package:mygrants/screens/main_app/help_center_screen.dart';
+import 'package:mygrants/screens/main_app/privacy_policy_screen.dart';
+import 'package:mygrants/screens/main_app/terms_of_use_screen.dart';
+import 'package:mygrants/screens/main_app/about_screen.dart';
+import 'package:mygrants/screens/main_app/update_business_profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
-import 'package:cangrant/services/saved_grants_service.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
+import 'package:mygrants/services/saved_grants_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

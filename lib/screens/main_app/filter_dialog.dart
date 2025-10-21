@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
 
 class FilterDialog extends StatefulWidget {
   final List<String> allStatuses;

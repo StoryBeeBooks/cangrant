@@ -3,14 +3,14 @@
 ## 🔴 MUST DO BEFORE SUBMISSION (Blockers)
 
 ### 1. Change Package Name/Bundle Identifier
-**Current:** `com.example.cangrant`  
+**Current:** `com.example.My-Grants`  
 **Action:** Change to your company domain
 
 #### Android:
 Edit `android/app/build.gradle.kts`:
 ```kotlin
 defaultConfig {
-    applicationId = "com.storybee.cangrant"  // Change this
+    applicationId = "com.storybee.My-Grants"  // Change this
     // ... rest of config
 }
 ```
@@ -18,7 +18,7 @@ defaultConfig {
 #### iOS:
 1. Open `ios/Runner.xcworkspace` in Xcode
 2. Select Runner target
-3. Change Bundle Identifier to `com.storybee.cangrant`
+3. Change Bundle Identifier to `com.storybee.My-Grants`
 
 ### 2. Create App Icon
 **Required Sizes:**
@@ -38,17 +38,17 @@ defaultConfig {
 
 #### Generate Keystore:
 ```bash
-keytool -genkey -v -keystore ~/cangrant-release.jks \
+keytool -genkey -v -keystore ~/My-Grants-release.jks \
   -keyalg RSA -keysize 2048 -validity 10000 \
-  -alias cangrant-key
+  -alias My-Grants-key
 ```
 
 #### Create `android/key.properties`:
 ```properties
 storePassword=YOUR_STORE_PASSWORD
 keyPassword=YOUR_KEY_PASSWORD
-keyAlias=cangrant-key
-storeFile=/path/to/cangrant-release.jks
+keyAlias=My-Grants-key
+storeFile=/path/to/My-Grants-release.jks
 ```
 
 #### Update `android/app/build.gradle.kts`:
@@ -84,7 +84,7 @@ buildTypes {
 **Required:** Public URL
 
 **Options:**
-- Create simple website: privacypolicy.cangrant.ca
+- Create simple website: privacypolicy.My-Grants.ca
 - Use GitHub Pages
 - Use services like Termly or iubenda
 
@@ -144,9 +144,9 @@ key.properties
 
 #### Full Description (2000-4000 chars):
 ```
-CanGrant - Your Gateway to Canadian Funding Opportunities
+My-Grants - Your Gateway to Canadian Funding Opportunities
 
-Discover and apply for government grants, funding programs, and financial support opportunities across Canada. Whether you're a startup, non-profit, or established business, CanGrant helps you find the perfect funding match.
+Discover and apply for government grants, funding programs, and financial support opportunities across Canada. Whether you're a startup, non-profit, or established business, My-Grants helps you find the perfect funding match.
 
 KEY FEATURES:
 
@@ -193,15 +193,15 @@ FUNDING TYPES:
 - Environmental initiatives
 - Arts and culture programs
 
-WHY CANGRANT?
+WHY My-Grants?
 Finding government funding shouldn't be complicated. We've simplified the grant discovery process, bringing all Canadian funding opportunities into one easy-to-use app.
 
-Download CanGrant today and unlock funding opportunities for your business!
+Download My-Grants today and unlock funding opportunities for your business!
 
 ---
 Privacy: We respect your privacy. Your data is stored securely and never shared with third parties. Read our full privacy policy at [YOUR_PRIVACY_URL]
 
-Support: Questions or feedback? Contact us at support@cangrant.ca
+Support: Questions or feedback? Contact us at support@My-Grants.ca
 ```
 
 ### 9. Prepare Marketing Materials
@@ -246,7 +246,7 @@ Consider adding Firebase Crashlytics or Sentry.
 Consider Firebase Analytics or Mixpanel for usage insights.
 
 ### 15. Create App Website
-Simple landing page at cangrant.ca with:
+Simple landing page at My-Grants.ca with:
 - App description
 - Download links
 - Privacy policy
@@ -289,9 +289,9 @@ Then archive and upload using Xcode.
 ## 📞 Support Information
 
 **Required for both stores:**
-- Support Email: support@cangrant.ca
-- Support URL: https://cangrant.ca/support (optional)
-- Privacy Policy URL: https://cangrant.ca/privacy (REQUIRED)
+- Support Email: support@My-Grants.ca
+- Support URL: https://My-Grants.ca/support (optional)
+- Privacy Policy URL: https://My-Grants.ca/privacy (REQUIRED)
 
 ## ⏱️ Timeline Estimate
 

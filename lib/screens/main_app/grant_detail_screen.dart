@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/models/grant.dart';
+import 'package:mygrants/models/grant.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
-import 'package:cangrant/services/saved_grants_service.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
+import 'package:mygrants/services/saved_grants_service.dart';
 
 class GrantDetailScreen extends StatefulWidget {
   final Grant grant;

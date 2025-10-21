@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/screens/main_app/main_screen.dart';
+import 'package:mygrants/screens/main_app/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/services/supabase_service.dart';
-import 'package:cangrant/screens/pre_login/onboarding_flow.dart';
-import 'package:cangrant/screens/main_app/main_screen.dart';
+import 'package:mygrants/services/supabase_service.dart';
+import 'package:mygrants/screens/pre_login/onboarding_flow.dart';
+import 'package:mygrants/screens/main_app/main_screen.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});

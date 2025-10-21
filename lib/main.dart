@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:cangrant/services/supabase_service.dart';
-import 'package:cangrant/screens/pre_login/splash_screen.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:mygrants/services/supabase_service.dart';
+import 'package:mygrants/screens/pre_login/splash_screen.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CanGrant',
+      title: 'My-Grants',
       debugShowCheckedModeBanner: false,
       locale: _locale,
       localizationsDelegates: const [

@@ -165,7 +165,7 @@ Future<void> resetFreeViews({int count = 3}) async {
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:My-Grants/l10n/app_localizations.dart';
 
 class MeteredPaywallScreen extends StatefulWidget {
   final int viewsUsed;
@@ -561,8 +561,8 @@ class _MeteredPaywallScreenState extends State<MeteredPaywallScreen> {
 
 Add this import at the top:
 ```dart
-import 'package:cangrant/screens/paywall/metered_paywall_screen.dart';
-import 'package:cangrant/services/supabase_service.dart';
+import 'package:My-Grants/screens/paywall/metered_paywall_screen.dart';
+import 'package:My-Grants/services/supabase_service.dart';
 ```
 
 Replace the `_openGrantDetail` method:

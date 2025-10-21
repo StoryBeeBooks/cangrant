@@ -69,8 +69,8 @@ dependencies:
 
 #### Apple App Store Connect:
 1. Create in-app purchase products:
-   - Product ID: `com.storybee.cangrant.weekly`
-   - Product ID: `com.storybee.cangrant.annual`
+   - Product ID: `com.storybee.My-Grants.weekly`
+   - Product ID: `com.storybee.My-Grants.annual`
 2. Set pricing
 3. Add descriptions
 4. Submit for review with app
@@ -99,8 +99,8 @@ class SubscriptionService {
   final InAppPurchase _iap = InAppPurchase.instance;
   
   // Product IDs
-  static const String weeklyId = 'com.storybee.cangrant.weekly';
-  static const String annualId = 'com.storybee.cangrant.annual';
+  static const String weeklyId = 'com.storybee.My-Grants.weekly';
+  static const String annualId = 'com.storybee.My-Grants.annual';
   
   // Subscription status
   bool _isSubscribed = false;
@@ -233,7 +233,7 @@ class SubscriptionService {
 ```dart
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-import 'package:cangrant/services/subscription_service.dart';
+import 'package:My-Grants/services/subscription_service.dart';
 
 class PaywallScreen extends StatefulWidget {
   const PaywallScreen({super.key});
@@ -672,12 +672,12 @@ Row(
   mainAxisAlignment: MainAxisAlignment.center,
   children: [
     TextButton(
-      onPressed: () => _launchUrl('https://cangrant.ca/terms'),
+      onPressed: () => _launchUrl('https://My-Grants.ca/terms'),
       child: Text('Terms'),
     ),
     Text(' • '),
     TextButton(
-      onPressed: () => _launchUrl('https://cangrant.ca/privacy'),
+      onPressed: () => _launchUrl('https://My-Grants.ca/privacy'),
       child: Text('Privacy'),
     ),
   ],

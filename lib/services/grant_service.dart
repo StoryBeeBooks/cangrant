@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:cangrant/models/grant.dart';
+import 'package:mygrants/models/grant.dart';
 
 class GrantService {
   static List<Grant>? _cachedGrants;

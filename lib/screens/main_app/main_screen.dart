@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/screens/main_app/home_screen.dart';
-import 'package:cangrant/screens/main_app/profile_screen.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:mygrants/screens/main_app/home_screen.dart';
+import 'package:mygrants/screens/main_app/profile_screen.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

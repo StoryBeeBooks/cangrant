@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cangrant/main.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:mygrants/main.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
 
 class LanguageSelectionScreen extends StatefulWidget {
   const LanguageSelectionScreen({super.key});

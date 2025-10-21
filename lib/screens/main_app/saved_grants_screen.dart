@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:cangrant/models/grant.dart';
-import 'package:cangrant/services/grant_service.dart';
-import 'package:cangrant/services/saved_grants_service.dart';
-import 'package:cangrant/screens/main_app/grant_detail_screen.dart';
+import 'package:mygrants/models/grant.dart';
+import 'package:mygrants/services/grant_service.dart';
+import 'package:mygrants/services/saved_grants_service.dart';
+import 'package:mygrants/screens/main_app/grant_detail_screen.dart';
 import 'package:intl/intl.dart';
-import 'package:cangrant/l10n/app_localizations.dart';
+import 'package:mygrants/l10n/app_localizations.dart';
 
 class SavedGrantsScreen extends StatefulWidget {
   const SavedGrantsScreen({super.key});
