@@ -149,20 +149,29 @@ class _UpdateBusinessProfileScreenState
       final supabaseService = SupabaseService();
       final userId = supabaseService.getCurrentUser()?.id;
 
-      if (userId != null) {
-        print('DEBUG: Saving business profile for user: $userId');
-        print('DEBUG: Profile data: $_answers');
+      if (userId == null) {
+        print('DEBUG: No user ID found - user might not be logged in');
+        throw Exception('User not logged in');
+      }
 
+      print('DEBUG: Saving business profile for user: $userId');
+      print('DEBUG: Profile data: $_answers');
+      print('DEBUG: Auth session: ${supabaseService.client.auth.currentSession?.user.email}');
+
+      // Try the update with better error handling
+      try {
         final response = await supabaseService.client
             .from('profiles')
             .update({'business_profile': _answers})
             .eq('user_id', userId)
-            .select();
-
-        print('DEBUG: Update response: $response');
-      } else {
-        print('DEBUG: No user ID found - user might not be logged in');
-        throw Exception('User not logged in');
+            .select()
+            .single();
+        
+        print('DEBUG: Update successful! Response: $response');
+      } catch (dbError) {
+        print('DEBUG: Database error: $dbError');
+        print('DEBUG: Error type: ${dbError.runtimeType}');
+        rethrow;
       }
 
       if (mounted) {
@@ -174,20 +183,19 @@ class _UpdateBusinessProfileScreenState
         );
         Navigator.pop(context);
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
       print('DEBUG: Error saving profile: $e');
+      print('DEBUG: Stack trace: $stackTrace');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error saving profile: $e'),
+            content: Text('Error: $e'),
             backgroundColor: Colors.red,
           ),
         );
       }
     }
-  }
-
-  Widget _buildQuestionWidget() {
+  }  Widget _buildQuestionWidget() {
     final question = _questions[_currentStep];
     final String type = question['type'];
 
