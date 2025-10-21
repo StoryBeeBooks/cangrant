@@ -152,13 +152,13 @@ class _UpdateBusinessProfileScreenState
       if (userId != null) {
         print('DEBUG: Saving business profile for user: $userId');
         print('DEBUG: Profile data: $_answers');
-        
+
         final response = await supabaseService.client
             .from('profiles')
             .update({'business_profile': _answers})
             .eq('user_id', userId)
             .select();
-        
+
         print('DEBUG: Update response: $response');
       } else {
         print('DEBUG: No user ID found - user might not be logged in');
