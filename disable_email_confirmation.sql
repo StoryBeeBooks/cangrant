@@ -17,9 +17,9 @@ FROM auth.users
 WHERE email = 'support@storybee.space';
 
 -- 2. Manually confirm their email (if they already signed up)
+-- Note: confirmed_at is auto-generated, so we only update email_confirmed_at
 UPDATE auth.users 
-SET email_confirmed_at = NOW(), 
-    confirmed_at = NOW()
+SET email_confirmed_at = NOW()
 WHERE email = 'support@storybee.space';
 
 -- 3. Verify the user is now confirmed
