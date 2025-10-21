@@ -134,7 +134,7 @@ class _FilterDialogState extends State<FilterDialog> {
                     RadioListTile<String>(
                       title: Text(localizations.translate('all_statuses')),
                       value: 'All Status',
-                      groupValue: _statusFilter,
+                      selected: _statusFilter == 'All Status',
                       onChanged: (value) {
                         setState(() {
                           _statusFilter = value;
