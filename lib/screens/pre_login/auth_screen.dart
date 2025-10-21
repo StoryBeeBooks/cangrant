@@ -74,8 +74,29 @@ class _AuthScreenState extends State<AuthScreen> {
       }
     } catch (e) {
       print('DEBUG AUTH: Error - $e');
+
+      // Parse error message to be user-friendly
+      String friendlyError = e.toString();
+
+      if (friendlyError.contains('email_not_confirmed')) {
+        friendlyError =
+            'Please check your email and click the confirmation link to activate your account.';
+      } else if (friendlyError.contains('Invalid login credentials')) {
+        friendlyError = 'Invalid email or password. Please try again.';
+      } else if (friendlyError.contains('User already registered')) {
+        friendlyError =
+            'This email is already registered. Try logging in instead.';
+      } else if (friendlyError.contains('AuthApiException')) {
+        friendlyError = friendlyError
+            .replaceAll('AuthApiException(message: ', '')
+            .replaceAll(')', '')
+            .replaceAll(', statusCode:', ':');
+      } else {
+        friendlyError = friendlyError.replaceAll('Exception: ', '');
+      }
+
       setState(() {
-        _errorMessage = e.toString().replaceAll('Exception: ', '');
+        _errorMessage = friendlyError;
       });
     } finally {
       if (mounted) {
@@ -119,8 +140,16 @@ class _AuthScreenState extends State<AuthScreen> {
     } catch (e) {
       print('DEBUG AUTH: Google sign-in error - $e');
       setState(() {
-        _errorMessage =
-            'Google sign-in failed: ${e.toString().replaceAll('Exception: ', '')}';
+        String friendlyError = e.toString();
+        if (friendlyError.contains('sign-in was cancelled')) {
+          _errorMessage = 'Google sign-in was cancelled. Please try again.';
+        } else if (friendlyError.contains('network')) {
+          _errorMessage =
+              'Network error. Please check your connection and try again.';
+        } else {
+          _errorMessage =
+              'Google sign-in failed. ${friendlyError.replaceAll('Exception: ', '').replaceAll('Google sign-in failed: ', '')}';
+        }
       });
     } finally {
       if (mounted) {
@@ -164,8 +193,16 @@ class _AuthScreenState extends State<AuthScreen> {
     } catch (e) {
       print('DEBUG AUTH: Apple sign-in error - $e');
       setState(() {
-        _errorMessage =
-            'Apple sign-in failed: ${e.toString().replaceAll('Exception: ', '')}';
+        String friendlyError = e.toString();
+        if (friendlyError.contains('cancelled')) {
+          _errorMessage = 'Apple sign-in was cancelled. Please try again.';
+        } else if (friendlyError.contains('network')) {
+          _errorMessage =
+              'Network error. Please check your connection and try again.';
+        } else {
+          _errorMessage =
+              'Apple sign-in failed. ${friendlyError.replaceAll('Exception: ', '').replaceAll('Apple sign-in failed: ', '')}';
+        }
       });
     } finally {
       if (mounted) {
@@ -217,29 +254,73 @@ class _AuthScreenState extends State<AuthScreen> {
                 // Error message
                 if (_errorMessage != null)
                   Container(
-                    padding: const EdgeInsets.all(12),
-                    margin: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    margin: const EdgeInsets.only(bottom: 20),
                     decoration: BoxDecoration(
-                      color: Colors.red[50],
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red[200]!),
+                      gradient: LinearGradient(
+                        colors: [Colors.red[50]!, Colors.red[100]!],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.red[300]!, width: 1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.red[100]!.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(
-                          Icons.error_outline,
+                          Icons.info_outline_rounded,
                           color: Colors.red[700],
-                          size: 20,
+                          size: 24,
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            _errorMessage!,
-                            style: TextStyle(
-                              color: Colors.red[700],
-                              fontSize: 14,
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _isLogin ? 'Sign In Failed' : 'Sign Up Failed',
+                                style: TextStyle(
+                                  color: Colors.red[900],
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _errorMessage!,
+                                style: TextStyle(
+                                  color: Colors.red[800],
+                                  fontSize: 14,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            color: Colors.red[700],
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _errorMessage = null;
+                            });
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
                         ),
                       ],
                     ),
