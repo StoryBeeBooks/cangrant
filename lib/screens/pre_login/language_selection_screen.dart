@@ -28,7 +28,7 @@ class LanguageSelectionScreen extends StatelessWidget {
     final isLandscape = screenWidth > screenHeight;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFE8F4F8), // Light blue background color
+      backgroundColor: Colors.white, // White background
       body: SafeArea(
         child: isLandscape
             ? _buildLandscapeLayout(context, screenWidth, screenHeight)
@@ -48,7 +48,7 @@ class LanguageSelectionScreen extends StatelessWidget {
       children: [
         const Spacer(flex: 1),
 
-        // Language background image at upper-middle
+        // Language background image at upper-middle - flat design
         Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
           child: Container(
@@ -56,28 +56,16 @@ class LanguageSelectionScreen extends StatelessWidget {
               maxWidth: screenWidth * 0.7,
               maxHeight: screenHeight * 0.35,
             ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  blurRadius: 20,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
-                'assets/images/language background.jpg',
-                fit: BoxFit.contain,
-              ),
+            child: Image.asset(
+              'assets/images/language background.jpg',
+              fit: BoxFit.contain,
             ),
           ),
         ),
 
-        SizedBox(height: screenHeight * 0.05),
-
+        SizedBox(
+          height: screenHeight * 0.08,
+        ), // Increased spacing to move buttons lower
         // Language buttons below the image
         Padding(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
@@ -126,7 +114,7 @@ class LanguageSelectionScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // Language background image
+              // Language background image - flat design
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                 child: Container(
@@ -134,28 +122,16 @@ class LanguageSelectionScreen extends StatelessWidget {
                     maxWidth: screenWidth * 0.35,
                     maxHeight: screenHeight * 0.5,
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.25),
-                        blurRadius: 16,
-                        offset: const Offset(0, 6),
-                      ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      'assets/images/language background.jpg',
-                      fit: BoxFit.contain,
-                    ),
+                  child: Image.asset(
+                    'assets/images/language background.jpg',
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),
 
-              SizedBox(height: screenHeight * 0.05),
-
+              SizedBox(
+                height: screenHeight * 0.08,
+              ), // Increased spacing to move buttons lower
               // Language buttons
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
