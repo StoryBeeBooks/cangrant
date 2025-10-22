@@ -23,61 +23,178 @@ class LanguageSelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isLandscape = screenWidth > screenHeight;
+
     return Scaffold(
       body: Stack(
         children: [
-          // Background image covering full screen dynamically
+          // Background image covering full screen
           Positioned.fill(
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                // Use BoxFit.cover to fill the screen while maintaining aspect ratio
-                return Image.asset(
-                  'assets/images/172.png',
-                  fit: BoxFit.cover,
-                  alignment: Alignment.center,
-                );
-              },
+            child: Image.asset(
+              'assets/images/172.png',
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
             ),
           ),
 
-          // Language buttons
+          // Main content with orientation-aware layout
           SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                const Spacer(),
-
-                // Language buttons at the bottom
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.08,
-                    vertical: MediaQuery.of(context).size.height * 0.05,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // English button
-                      _buildLanguageButton(
-                        context,
-                        label: 'English',
-                        onTap: () => _selectLanguage(context, 'en'),
-                      ),
-                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-
-                      // Chinese button
-                      _buildLanguageButton(
-                        context,
-                        label: '中文',
-                        onTap: () => _selectLanguage(context, 'zh'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+            child: isLandscape
+                ? _buildLandscapeLayout(context, screenWidth, screenHeight)
+                : _buildPortraitLayout(context, screenWidth, screenHeight),
           ),
         ],
       ),
+    );
+  }
+
+  // Portrait layout: Image at top-center, buttons below
+  Widget _buildPortraitLayout(
+    BuildContext context,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Spacer(flex: 1),
+
+        // Language background image at upper-middle
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+          child: Container(
+            constraints: BoxConstraints(
+              maxWidth: screenWidth * 0.7,
+              maxHeight: screenHeight * 0.35,
+            ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/language background.jpg',
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ),
+
+        SizedBox(height: screenHeight * 0.05),
+
+        // Language buttons below the image
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.08),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // English button
+              _buildLanguageButton(
+                context,
+                label: 'English',
+                onTap: () => _selectLanguage(context, 'en'),
+                screenWidth: screenWidth,
+              ),
+              SizedBox(width: screenWidth * 0.05),
+
+              // Chinese button
+              _buildLanguageButton(
+                context,
+                label: '中文',
+                onTap: () => _selectLanguage(context, 'zh'),
+                screenWidth: screenWidth,
+              ),
+            ],
+          ),
+        ),
+
+        const Spacer(flex: 2),
+      ],
+    );
+  }
+
+  // Landscape layout: Image on right, buttons on right
+  Widget _buildLandscapeLayout(
+    BuildContext context,
+    double screenWidth,
+    double screenHeight,
+  ) {
+    return Row(
+      children: [
+        // Left side - empty space or can add branding
+        const Spacer(flex: 1),
+
+        // Right side - Image and buttons
+        Expanded(
+          flex: 2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Language background image
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxWidth: screenWidth * 0.35,
+                    maxHeight: screenHeight * 0.5,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.asset(
+                      'assets/images/language background.jpg',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+
+              SizedBox(height: screenHeight * 0.05),
+
+              // Language buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // English button
+                  _buildLanguageButton(
+                    context,
+                    label: 'English',
+                    onTap: () => _selectLanguage(context, 'en'),
+                    screenWidth: screenWidth,
+                  ),
+                  SizedBox(width: screenWidth * 0.03),
+
+                  // Chinese button
+                  _buildLanguageButton(
+                    context,
+                    label: '中文',
+                    onTap: () => _selectLanguage(context, 'zh'),
+                    screenWidth: screenWidth,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -85,9 +202,9 @@ class LanguageSelectionScreen extends StatelessWidget {
     BuildContext context, {
     required String label,
     required VoidCallback onTap,
+    required double screenWidth,
   }) {
     // Calculate responsive button size
-    final screenWidth = MediaQuery.of(context).size.width;
     final buttonWidth = (screenWidth * 0.25).clamp(100.0, 130.0);
     final buttonHeight = (screenWidth * 0.12).clamp(45.0, 60.0);
 
