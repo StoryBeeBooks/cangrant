@@ -140,28 +140,29 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ),
 
-          // Content overlay
+          // Content overlay - positioned in bottom right
           SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.08,
-                  vertical: screenHeight * 0.02,
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  right: screenWidth * 0.06,
+                  bottom: screenHeight * 0.04,
+                  left: screenWidth * 0.15, // Allow space on left for balance
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Spacer(),
-
-                    // Error message
+                    // Error message (if any)
                     if (_errorMessage != null)
                       Container(
+                        width: double.infinity,
                         padding: EdgeInsets.symmetric(
                           horizontal: screenWidth * 0.04,
-                          vertical: screenHeight * 0.018,
+                          vertical: screenHeight * 0.015,
                         ),
-                        margin: EdgeInsets.only(bottom: screenHeight * 0.03),
+                        margin: EdgeInsets.only(bottom: screenHeight * 0.025),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [Colors.red[50]!, Colors.red[100]!],
@@ -187,9 +188,9 @@ class _AuthScreenState extends State<AuthScreen> {
                             Icon(
                               Icons.info_outline_rounded,
                               color: Colors.red[700],
-                              size: 24,
+                              size: 22,
                             ),
-                            const SizedBox(width: 12),
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,16 +199,22 @@ class _AuthScreenState extends State<AuthScreen> {
                                     'Sign In Failed',
                                     style: TextStyle(
                                       color: Colors.red[900],
-                                      fontSize: 15,
+                                      fontSize: (screenWidth * 0.037).clamp(
+                                        13.0,
+                                        15.0,
+                                      ),
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 3),
                                   Text(
                                     _errorMessage!,
                                     style: TextStyle(
                                       color: Colors.red[800],
-                                      fontSize: 14,
+                                      fontSize: (screenWidth * 0.033).clamp(
+                                        12.0,
+                                        14.0,
+                                      ),
                                       height: 1.4,
                                     ),
                                   ),
@@ -232,53 +239,65 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
 
+                    // Sign in instruction text - positioned above buttons
+                    Padding(
+                      padding: EdgeInsets.only(bottom: screenHeight * 0.02),
+                      child: Text(
+                        'Sign in to continue',
+                        style: TextStyle(
+                          fontSize: (screenWidth * 0.042).clamp(15.0, 18.0),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(0, 1),
+                              blurRadius: 3,
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.right,
+                      ),
+                    ),
+
                     // Social Sign-In Buttons Row
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         // Google Sign-In Button
-                        _buildGoogleSignInButton(screenWidth),
-                        SizedBox(width: screenWidth * 0.04),
+                        _buildGoogleSignInButton(screenWidth, screenHeight),
+                        SizedBox(width: screenWidth * 0.03),
 
                         // Apple Sign-In Button
-                        _buildAppleSignInButton(screenWidth),
+                        _buildAppleSignInButton(screenWidth, screenHeight),
                       ],
                     ),
-                    SizedBox(height: screenHeight * 0.03),
-
-                    // Sign in instruction
-                    Text(
-                      'Sign in to continue',
-                      style: TextStyle(
-                        fontSize: (screenWidth * 0.045).clamp(16.0, 20.0),
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: screenHeight * 0.04),
 
                     // Privacy note with clickable links
                     Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: screenWidth * 0.04,
-                      ),
+                      padding: EdgeInsets.only(top: screenHeight * 0.025),
                       child: RichText(
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.right,
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: (screenWidth * 0.03).clamp(11.0, 14.0),
+                            fontSize: (screenWidth * 0.028).clamp(10.0, 12.0),
                             color: Colors.white.withOpacity(0.9),
-                            height: 1.5,
+                            height: 1.4,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withOpacity(0.25),
+                                offset: const Offset(0, 1),
+                                blurRadius: 2,
+                              ),
+                            ],
                           ),
                           children: [
                             const TextSpan(
-                              text: 'By signing in, you agree to our ',
+                              text: 'By signing in, you agree to our\n',
                             ),
                             TextSpan(
                               text: 'Terms of Service',
-                              style: TextStyle(
-                                color: Colors.white,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                               ),
@@ -290,8 +309,7 @@ class _AuthScreenState extends State<AuthScreen> {
                             const TextSpan(text: ' and '),
                             TextSpan(
                               text: 'Privacy Policy',
-                              style: TextStyle(
-                                color: Colors.white,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
                               ),
@@ -304,8 +322,6 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                       ),
                     ),
-
-                    const Spacer(),
                   ],
                 ),
               ),
@@ -327,21 +343,23 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  Widget _buildGoogleSignInButton(double screenWidth) {
-    final buttonSize = (screenWidth * 0.18).clamp(60.0, 80.0);
-    final iconSize = (screenWidth * 0.12).clamp(40.0, 52.0);
+  Widget _buildGoogleSignInButton(double screenWidth, double screenHeight) {
+    // Button size scales with screen size but maintains good proportions
+    // Using smaller percentages for bottom-right placement
+    final buttonSize = (screenWidth * 0.15).clamp(56.0, 72.0);
+    final iconSize = (buttonSize * 0.65).clamp(36.0, 48.0);
 
     return Container(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -349,7 +367,7 @@ class _AuthScreenState extends State<AuthScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: _isLoading ? null : _handleGoogleSignIn,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           child: Center(
             child: _isLoading
                 ? SizedBox(
@@ -369,21 +387,22 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _buildAppleSignInButton(double screenWidth) {
-    final buttonSize = (screenWidth * 0.18).clamp(60.0, 80.0);
-    final iconSize = (screenWidth * 0.12).clamp(40.0, 52.0);
+  Widget _buildAppleSignInButton(double screenWidth, double screenHeight) {
+    // Button size scales with screen size but maintains good proportions
+    final buttonSize = (screenWidth * 0.15).clamp(56.0, 72.0);
+    final iconSize = (buttonSize * 0.65).clamp(36.0, 48.0);
 
     return Container(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
@@ -391,7 +410,7 @@ class _AuthScreenState extends State<AuthScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: _isLoading ? null : _handleAppleSignIn,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           child: Center(
             child: _isLoading
                 ? SizedBox(
