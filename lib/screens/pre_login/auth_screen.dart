@@ -259,16 +259,20 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(height: 24),
 
-                  // Google Sign-In Button
-                  _buildGoogleSignInButton(),
-                  const SizedBox(height: 16),
+                  // Social Sign-In Buttons Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Google Sign-In Button
+                      _buildGoogleSignInButton(),
+                      const SizedBox(width: 16),
 
-                  // Apple Sign-In Button (iOS/macOS only)
-                  if (Platform.isIOS || Platform.isMacOS) ...[
-                    _buildAppleSignInButton(),
-                    const SizedBox(height: 32),
-                  ] else
-                    const SizedBox(height: 32),
+                      // Apple Sign-In Button (iOS/macOS only)
+                      if (Platform.isIOS || Platform.isMacOS)
+                        _buildAppleSignInButton(),
+                    ],
+                  ),
+                  const SizedBox(height: 32),
 
                   // Privacy note
                   Padding(
@@ -294,44 +298,46 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Widget _buildGoogleSignInButton() {
     return Container(
+      width: 72,
+      height: 72,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey[300]!, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.grey.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: ElevatedButton.icon(
-        onPressed: _isLoading ? null : _handleGoogleSignIn,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black87,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-            side: BorderSide(color: Colors.grey[300]!),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _isLoading ? null : _handleGoogleSignIn,
+          borderRadius: BorderRadius.circular(16),
+          child: Center(
+            child: _isLoading
+                ? const SizedBox(
+                    height: 28,
+                    width: 28,
+                    child: CircularProgressIndicator(strokeWidth: 2.5),
+                  )
+                : Image.network(
+                    'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
+                    height: 32,
+                    width: 32,
+                    errorBuilder: (context, error, stackTrace) => Text(
+                      'G',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ),
           ),
-        ),
-        icon: _isLoading
-            ? const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              )
-            : Image.network(
-                'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                height: 24,
-                width: 24,
-                errorBuilder: (context, error, stackTrace) =>
-                    const Icon(Icons.g_mobiledata, size: 24),
-              ),
-        label: Text(
-          _isLoading ? 'Signing in...' : 'Continue with Google',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -339,40 +345,36 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Widget _buildAppleSignInButton() {
     return Container(
+      width: 72,
+      height: 72,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.25),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: ElevatedButton.icon(
-        onPressed: _isLoading ? null : _handleAppleSignIn,
-        style: ElevatedButton.styleFrom(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          backgroundColor: Colors.black,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: _isLoading ? null : _handleAppleSignIn,
+          borderRadius: BorderRadius.circular(16),
+          child: Center(
+            child: _isLoading
+                ? const SizedBox(
+                    height: 28,
+                    width: 28,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Icon(Icons.apple, size: 36, color: Colors.white),
           ),
-        ),
-        icon: _isLoading
-            ? const SizedBox(
-                height: 24,
-                width: 24,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.white,
-                ),
-              )
-            : const Icon(Icons.apple, size: 24),
-        label: Text(
-          _isLoading ? 'Signing in...' : 'Continue with Apple',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
     );
