@@ -28,24 +28,11 @@ class LanguageSelectionScreen extends StatelessWidget {
     final isLandscape = screenWidth > screenHeight;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background image covering full screen
-          Positioned.fill(
-            child: Image.asset(
-              'assets/images/172.png',
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-            ),
-          ),
-
-          // Main content with orientation-aware layout
-          SafeArea(
-            child: isLandscape
-                ? _buildLandscapeLayout(context, screenWidth, screenHeight)
-                : _buildPortraitLayout(context, screenWidth, screenHeight),
-          ),
-        ],
+      backgroundColor: const Color(0xFFE8F4F8), // Light blue background color
+      body: SafeArea(
+        child: isLandscape
+            ? _buildLandscapeLayout(context, screenWidth, screenHeight)
+            : _buildPortraitLayout(context, screenWidth, screenHeight),
       ),
     );
   }
