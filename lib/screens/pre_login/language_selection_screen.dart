@@ -24,62 +24,83 @@ class LanguageSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/172.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // Logo
-              Icon(
-                Icons.card_giftcard,
-                size: 80,
-                color: Theme.of(context).primaryColor,
-              ),
-              const SizedBox(height: 48),
+              const Spacer(),
 
-              // Welcome heading
-              const Text(
-                'Welcome to CanGrant',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
+              // Language buttons at the bottom
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // English button
+                    _buildLanguageButton(
+                      context,
+                      label: 'English',
+                      onTap: () => _selectLanguage(context, 'en'),
+                    ),
+                    const SizedBox(width: 16),
 
-              // Subtitle
-              Text(
-                'Please select your language',
-                style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 48),
-
-              // English button
-              ElevatedButton(
-                onPressed: () => _selectLanguage(context, 'en'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                    // Chinese button
+                    _buildLanguageButton(
+                      context,
+                      label: '中文',
+                      onTap: () => _selectLanguage(context, 'zh'),
+                    ),
+                  ],
                 ),
-                child: const Text('English', style: TextStyle(fontSize: 18)),
               ),
-              const SizedBox(height: 16),
-
-              // Chinese button
-              ElevatedButton(
-                onPressed: () => _selectLanguage(context, 'zh'),
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 20),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: const Text('中文', style: TextStyle(fontSize: 18)),
-              ),
+              const SizedBox(height: 32),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLanguageButton(
+    BuildContext context, {
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(20),
+          child: Center(
+            child: Text(
+              label,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF5E35B1),
+              ),
+            ),
           ),
         ),
       ),

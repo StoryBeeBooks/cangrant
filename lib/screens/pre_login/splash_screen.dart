@@ -47,29 +47,13 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.white,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // CanGrant Logo
-            // TODO: Replace with actual logo image when available
-            Icon(Icons.card_giftcard, size: 100, color: Colors.white),
-            const SizedBox(height: 16),
-            const Text(
-              'CanGrant',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(height: 48),
-            // Loading indicator
-            const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-          ],
+        child: Image.asset(
+          'assets/images/loading image.png',
+          width: 200,
+          height: 200,
+          fit: BoxFit.contain,
         ),
       ),
     );
