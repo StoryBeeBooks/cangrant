@@ -24,46 +24,50 @@ class LanguageSelectionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/172.png'),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          // Background image covering full screen
+          Positioned.fill(
+            child: Image.asset('assets/images/172.png', fit: BoxFit.cover),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Spacer(),
 
-              // Language buttons at the bottom
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // English button
-                    _buildLanguageButton(
-                      context,
-                      label: 'English',
-                      onTap: () => _selectLanguage(context, 'en'),
-                    ),
-                    const SizedBox(width: 16),
+          // Language buttons
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                const Spacer(),
 
-                    // Chinese button
-                    _buildLanguageButton(
-                      context,
-                      label: '中文',
-                      onTap: () => _selectLanguage(context, 'zh'),
-                    ),
-                  ],
+                // Language buttons at the bottom
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32.0,
+                    vertical: 40.0,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // English button
+                      _buildLanguageButton(
+                        context,
+                        label: 'English',
+                        onTap: () => _selectLanguage(context, 'en'),
+                      ),
+                      const SizedBox(width: 20),
+
+                      // Chinese button
+                      _buildLanguageButton(
+                        context,
+                        label: '中文',
+                        onTap: () => _selectLanguage(context, 'zh'),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-            ],
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -74,14 +78,14 @@ class LanguageSelectionScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) {
     return Container(
-      width: 120,
-      height: 120,
+      width: 110,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -91,15 +95,16 @@ class LanguageSelectionScreen extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(12),
           child: Center(
             child: Text(
               label,
               style: const TextStyle(
-                fontSize: 24,
+                fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF5E35B1),
+                color: Color(0xFF7BA4BC), // Blue from the sailboat/water
               ),
+              textAlign: TextAlign.center,
             ),
           ),
         ),
