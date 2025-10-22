@@ -69,7 +69,7 @@ class SupabaseService {
       // Initialize Google Sign-In
       final GoogleSignIn googleSignIn = GoogleSignIn(
         serverClientId: Platform.isAndroid
-            ? 'YOUR_ANDROID_CLIENT_ID.apps.googleusercontent.com' // TODO: Replace with actual Android client ID
+            ? '162637828951-ql1ktn0a5274u7imfgnok16tup5etofc.apps.googleusercontent.com'
             : null,
       );
 
