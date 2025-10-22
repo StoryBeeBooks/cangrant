@@ -140,114 +140,164 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ),
 
-          // Content overlay - positioned in bottom right
+          // Content overlay - positioned at bottom with better UX/UI design
           SafeArea(
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: EdgeInsets.only(
-                  right: screenWidth * 0.06,
-                  bottom: screenHeight * 0.04,
-                  left: screenWidth * 0.15, // Allow space on left for balance
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    // Error message (if any)
-                    if (_errorMessage != null)
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: screenWidth * 0.04,
-                          vertical: screenHeight * 0.015,
+            child: Column(
+              children: [
+                // Error message at top if present
+                if (_errorMessage != null)
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.045,
+                      vertical: screenHeight * 0.018,
+                    ),
+                    margin: EdgeInsets.fromLTRB(
+                      screenWidth * 0.06,
+                      screenHeight * 0.02,
+                      screenWidth * 0.06,
+                      0,
+                    ),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Colors.red[50]!, Colors.red[100]!],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: Colors.red[300]!, width: 1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
                         ),
-                        margin: EdgeInsets.only(bottom: screenHeight * 0.025),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.red[50]!, Colors.red[100]!],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                      ],
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.error_outline_rounded,
+                          color: Colors.red[700],
+                          size: 24,
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Sign In Failed',
+                                style: TextStyle(
+                                  color: Colors.red[900],
+                                  fontSize: (screenWidth * 0.04).clamp(
+                                    14.0,
+                                    16.0,
+                                  ),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                _errorMessage!,
+                                style: TextStyle(
+                                  color: Colors.red[800],
+                                  fontSize: (screenWidth * 0.035).clamp(
+                                    12.0,
+                                    14.0,
+                                  ),
+                                  height: 1.5,
+                                ),
+                              ),
+                            ],
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.red[300]!,
-                            width: 1.5,
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.close_rounded,
+                            color: Colors.red[700],
+                            size: 22,
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.red[100]!.withOpacity(0.3),
-                              blurRadius: 8,
+                          onPressed: () {
+                            setState(() {
+                              _errorMessage = null;
+                            });
+                          },
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                const Spacer(),
+
+                // Sign-in card container with semi-transparent background
+                Container(
+                  margin: EdgeInsets.fromLTRB(
+                    screenWidth * 0.08,
+                    0,
+                    screenWidth * 0.08,
+                    screenHeight * 0.08,
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.06,
+                    vertical: screenHeight * 0.04,
+                  ),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white.withOpacity(0.25),
+                        Colors.white.withOpacity(0.15),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.3),
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Welcome text
+                      Text(
+                        'Welcome',
+                        style: TextStyle(
+                          fontSize: (screenWidth * 0.07).clamp(24.0, 32.0),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.5,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.4),
                               offset: const Offset(0, 2),
+                              blurRadius: 4,
                             ),
                           ],
                         ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.info_outline_rounded,
-                              color: Colors.red[700],
-                              size: 22,
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Sign In Failed',
-                                    style: TextStyle(
-                                      color: Colors.red[900],
-                                      fontSize: (screenWidth * 0.037).clamp(
-                                        13.0,
-                                        15.0,
-                                      ),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 3),
-                                  Text(
-                                    _errorMessage!,
-                                    style: TextStyle(
-                                      color: Colors.red[800],
-                                      fontSize: (screenWidth * 0.033).clamp(
-                                        12.0,
-                                        14.0,
-                                      ),
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.red[700],
-                                size: 20,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _errorMessage = null;
-                                });
-                              },
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(),
-                            ),
-                          ],
-                        ),
+                        textAlign: TextAlign.center,
                       ),
 
-                    // Sign in instruction text - positioned above buttons
-                    Padding(
-                      padding: EdgeInsets.only(bottom: screenHeight * 0.02),
-                      child: Text(
+                      SizedBox(height: screenHeight * 0.015),
+
+                      // Subtitle
+                      Text(
                         'Sign in to continue',
                         style: TextStyle(
                           fontSize: (screenWidth * 0.042).clamp(15.0, 18.0),
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withOpacity(0.95),
                           shadows: [
                             Shadow(
                               color: Colors.black.withOpacity(0.3),
@@ -256,36 +306,37 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ],
                         ),
-                        textAlign: TextAlign.right,
+                        textAlign: TextAlign.center,
                       ),
-                    ),
 
-                    // Social Sign-In Buttons Row
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Google Sign-In Button
-                        _buildGoogleSignInButton(screenWidth, screenHeight),
-                        SizedBox(width: screenWidth * 0.03),
+                      SizedBox(height: screenHeight * 0.035),
 
-                        // Apple Sign-In Button
-                        _buildAppleSignInButton(screenWidth, screenHeight),
-                      ],
-                    ),
+                      // Social Sign-In Buttons Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Google Sign-In Button
+                          _buildGoogleSignInButton(screenWidth, screenHeight),
+                          SizedBox(width: screenWidth * 0.04),
 
-                    // Privacy note with clickable links
-                    Padding(
-                      padding: EdgeInsets.only(top: screenHeight * 0.025),
-                      child: RichText(
-                        textAlign: TextAlign.right,
+                          // Apple Sign-In Button
+                          _buildAppleSignInButton(screenWidth, screenHeight),
+                        ],
+                      ),
+
+                      SizedBox(height: screenHeight * 0.03),
+
+                      // Privacy note with clickable links
+                      RichText(
+                        textAlign: TextAlign.center,
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: (screenWidth * 0.028).clamp(10.0, 12.0),
+                            fontSize: (screenWidth * 0.03).clamp(11.0, 13.0),
                             color: Colors.white.withOpacity(0.9),
-                            height: 1.4,
+                            height: 1.5,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.25),
+                                color: Colors.black.withOpacity(0.3),
                                 offset: const Offset(0, 1),
                                 blurRadius: 2,
                               ),
@@ -293,13 +344,14 @@ class _AuthScreenState extends State<AuthScreen> {
                           ),
                           children: [
                             const TextSpan(
-                              text: 'By signing in, you agree to our\n',
+                              text: 'By signing in, you agree to our ',
                             ),
                             TextSpan(
                               text: 'Terms of Service',
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
+                                decorationColor: Colors.white,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => _launchURL(
@@ -312,6 +364,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
+                                decorationColor: Colors.white,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () => _launchURL(
@@ -321,10 +374,10 @@ class _AuthScreenState extends State<AuthScreen> {
                           ],
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
@@ -344,22 +397,26 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildGoogleSignInButton(double screenWidth, double screenHeight) {
-    // Button size scales with screen size but maintains good proportions
-    // Using smaller percentages for bottom-right placement
-    final buttonSize = (screenWidth * 0.15).clamp(56.0, 72.0);
-    final iconSize = (buttonSize * 0.65).clamp(36.0, 48.0);
+    // Larger buttons for better UX - easier to tap
+    final buttonSize = (screenWidth * 0.18).clamp(68.0, 88.0);
+    final iconSize = (buttonSize * 0.6).clamp(40.0, 52.0);
 
     return Container(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+          BoxShadow(
+            color: Colors.white.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
@@ -367,13 +424,18 @@ class _AuthScreenState extends State<AuthScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: _isLoading ? null : _handleGoogleSignIn,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           child: Center(
             child: _isLoading
                 ? SizedBox(
                     height: iconSize * 0.7,
                     width: iconSize * 0.7,
-                    child: const CircularProgressIndicator(strokeWidth: 2.5),
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFF4285F4),
+                      ),
+                    ),
                   )
                 : Image.asset(
                     'assets/images/Google Icon.png',
@@ -388,21 +450,26 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Widget _buildAppleSignInButton(double screenWidth, double screenHeight) {
-    // Button size scales with screen size but maintains good proportions
-    final buttonSize = (screenWidth * 0.15).clamp(56.0, 72.0);
-    final iconSize = (buttonSize * 0.65).clamp(36.0, 48.0);
+    // Larger buttons for better UX - easier to tap
+    final buttonSize = (screenWidth * 0.18).clamp(68.0, 88.0);
+    final iconSize = (buttonSize * 0.6).clamp(40.0, 52.0);
 
     return Container(
       width: buttonSize,
       height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
+          ),
+          BoxShadow(
+            color: Colors.white.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, -2),
           ),
         ],
       ),
@@ -410,13 +477,16 @@ class _AuthScreenState extends State<AuthScreen> {
         color: Colors.transparent,
         child: InkWell(
           onTap: _isLoading ? null : _handleAppleSignIn,
-          borderRadius: BorderRadius.circular(14),
+          borderRadius: BorderRadius.circular(18),
           child: Center(
             child: _isLoading
                 ? SizedBox(
                     height: iconSize * 0.7,
                     width: iconSize * 0.7,
-                    child: const CircularProgressIndicator(strokeWidth: 2.5),
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 3,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                    ),
                   )
                 : Image.asset(
                     'assets/images/Apple Icon.png',
