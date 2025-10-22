@@ -1,4 +1,4 @@
-package com.example.cangrant
+package com.mygrants.app
 
 import io.flutter.embedding.android.FlutterActivity
 
