@@ -26,9 +26,18 @@ class LanguageSelectionScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background image covering full screen
+          // Background image covering full screen dynamically
           Positioned.fill(
-            child: Image.asset('assets/images/172.png', fit: BoxFit.cover),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                // Use BoxFit.cover to fill the screen while maintaining aspect ratio
+                return Image.asset(
+                  'assets/images/172.png',
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                );
+              },
+            ),
           ),
 
           // Language buttons
@@ -40,9 +49,9 @@ class LanguageSelectionScreen extends StatelessWidget {
 
                 // Language buttons at the bottom
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 32.0,
-                    vertical: 40.0,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.08,
+                    vertical: MediaQuery.of(context).size.height * 0.05,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +62,7 @@ class LanguageSelectionScreen extends StatelessWidget {
                         label: 'English',
                         onTap: () => _selectLanguage(context, 'en'),
                       ),
-                      const SizedBox(width: 20),
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.05),
 
                       // Chinese button
                       _buildLanguageButton(
@@ -77,9 +86,14 @@ class LanguageSelectionScreen extends StatelessWidget {
     required String label,
     required VoidCallback onTap,
   }) {
+    // Calculate responsive button size
+    final screenWidth = MediaQuery.of(context).size.width;
+    final buttonWidth = (screenWidth * 0.25).clamp(100.0, 130.0);
+    final buttonHeight = (screenWidth * 0.12).clamp(45.0, 60.0);
+
     return Container(
-      width: 110,
-      height: 50,
+      width: buttonWidth,
+      height: buttonHeight,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -99,10 +113,10 @@ class LanguageSelectionScreen extends StatelessWidget {
           child: Center(
             child: Text(
               label,
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: (screenWidth * 0.04).clamp(14.0, 18.0),
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF7BA4BC), // Blue from the sailboat/water
+                color: const Color(0xFF7BA4BC), // Blue from the sailboat/water
               ),
               textAlign: TextAlign.center,
             ),

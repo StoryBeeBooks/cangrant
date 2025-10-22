@@ -124,6 +124,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -139,7 +142,10 @@ class _AuthScreenState extends State<AuthScreen> {
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(32.0),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.08,
+                vertical: screenHeight * 0.02,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -147,39 +153,42 @@ class _AuthScreenState extends State<AuthScreen> {
                   // Logo
                   Icon(
                     Icons.card_giftcard,
-                    size: 100,
+                    size: (screenWidth * 0.25).clamp(80.0, 120.0),
                     color: Theme.of(context).primaryColor,
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Title
-                  const Text(
+                  Text(
                     'Welcome to My-Grants',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: (screenWidth * 0.08).clamp(24.0, 36.0),
+                      fontWeight: FontWeight.bold,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: screenHeight * 0.015),
 
                   // Subtitle
                   Text(
                     'Discover Canadian grants and funding opportunities',
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: (screenWidth * 0.04).clamp(14.0, 18.0),
                       color: Colors.grey[600],
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 48),
+                  SizedBox(height: screenHeight * 0.06),
 
                   // Error message
                   if (_errorMessage != null)
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 14,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: screenWidth * 0.04,
+                        vertical: screenHeight * 0.018,
                       ),
-                      margin: const EdgeInsets.only(bottom: 24),
+                      margin: EdgeInsets.only(bottom: screenHeight * 0.03),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [Colors.red[50]!, Colors.red[100]!],
@@ -251,36 +260,38 @@ class _AuthScreenState extends State<AuthScreen> {
                   Text(
                     'Sign in to continue',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: (screenWidth * 0.045).clamp(16.0, 20.0),
                       fontWeight: FontWeight.w600,
                       color: Colors.grey[800],
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: screenHeight * 0.03),
 
                   // Social Sign-In Buttons Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       // Google Sign-In Button
-                      _buildGoogleSignInButton(),
-                      const SizedBox(width: 16),
+                      _buildGoogleSignInButton(screenWidth),
+                      SizedBox(width: screenWidth * 0.04),
 
                       // Apple Sign-In Button (iOS/macOS only)
                       if (Platform.isIOS || Platform.isMacOS)
-                        _buildAppleSignInButton(),
+                        _buildAppleSignInButton(screenWidth),
                     ],
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: screenHeight * 0.04),
 
                   // Privacy note
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.04,
+                    ),
                     child: Text(
                       'By signing in, you agree to our Terms of Service and Privacy Policy',
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: (screenWidth * 0.03).clamp(11.0, 14.0),
                         color: Colors.grey[600],
                         height: 1.5,
                       ),
@@ -296,10 +307,13 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _buildGoogleSignInButton() {
+  Widget _buildGoogleSignInButton(double screenWidth) {
+    final buttonSize = (screenWidth * 0.18).clamp(60.0, 80.0);
+    final iconSize = (screenWidth * 0.08).clamp(28.0, 36.0);
+
     return Container(
-      width: 72,
-      height: 72,
+      width: buttonSize,
+      height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -319,19 +333,19 @@ class _AuthScreenState extends State<AuthScreen> {
           borderRadius: BorderRadius.circular(16),
           child: Center(
             child: _isLoading
-                ? const SizedBox(
-                    height: 28,
-                    width: 28,
-                    child: CircularProgressIndicator(strokeWidth: 2.5),
+                ? SizedBox(
+                    height: iconSize * 0.9,
+                    width: iconSize * 0.9,
+                    child: const CircularProgressIndicator(strokeWidth: 2.5),
                   )
                 : Image.network(
                     'https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg',
-                    height: 32,
-                    width: 32,
+                    height: iconSize,
+                    width: iconSize,
                     errorBuilder: (context, error, stackTrace) => Text(
                       'G',
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: iconSize * 0.85,
                         fontWeight: FontWeight.bold,
                         color: Colors.blue[700],
                       ),
@@ -343,10 +357,13 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
-  Widget _buildAppleSignInButton() {
+  Widget _buildAppleSignInButton(double screenWidth) {
+    final buttonSize = (screenWidth * 0.18).clamp(60.0, 80.0);
+    final iconSize = (screenWidth * 0.09).clamp(32.0, 40.0);
+
     return Container(
-      width: 72,
-      height: 72,
+      width: buttonSize,
+      height: buttonSize,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(16),
@@ -365,15 +382,15 @@ class _AuthScreenState extends State<AuthScreen> {
           borderRadius: BorderRadius.circular(16),
           child: Center(
             child: _isLoading
-                ? const SizedBox(
-                    height: 28,
-                    width: 28,
-                    child: CircularProgressIndicator(
+                ? SizedBox(
+                    height: iconSize * 0.9,
+                    width: iconSize * 0.9,
+                    child: const CircularProgressIndicator(
                       strokeWidth: 2.5,
                       color: Colors.white,
                     ),
                   )
-                : const Icon(Icons.apple, size: 36, color: Colors.white),
+                : Icon(Icons.apple, size: iconSize, color: Colors.white),
           ),
         ),
       ),
