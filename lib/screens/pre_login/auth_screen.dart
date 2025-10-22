@@ -233,7 +233,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
                 const Spacer(),
 
-                // Sign-in card container with semi-transparent background
+                // Sign-in card container with darker semi-transparent background
                 Container(
                   margin: EdgeInsets.fromLTRB(
                     screenWidth * 0.08,
@@ -250,19 +250,19 @@ class _AuthScreenState extends State<AuthScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.white.withOpacity(0.25),
-                        Colors.white.withOpacity(0.15),
+                        Colors.black.withOpacity(0.4),
+                        Colors.black.withOpacity(0.5),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(24),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.3),
+                      color: Colors.white.withOpacity(0.4),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 20,
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 24,
                         offset: const Offset(0, 10),
                       ),
                     ],
@@ -270,19 +270,19 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Welcome text
+                      // Welcome text - brighter and larger
                       Text(
                         'Welcome',
                         style: TextStyle(
-                          fontSize: (screenWidth * 0.07).clamp(24.0, 32.0),
+                          fontSize: (screenWidth * 0.08).clamp(26.0, 36.0),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                           letterSpacing: 0.5,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withOpacity(0.4),
+                              color: Colors.black.withOpacity(0.5),
                               offset: const Offset(0, 2),
-                              blurRadius: 4,
+                              blurRadius: 6,
                             ),
                           ],
                         ),
@@ -291,18 +291,18 @@ class _AuthScreenState extends State<AuthScreen> {
 
                       SizedBox(height: screenHeight * 0.015),
 
-                      // Subtitle
+                      // Subtitle - brighter and larger
                       Text(
                         'Sign in to continue',
                         style: TextStyle(
-                          fontSize: (screenWidth * 0.042).clamp(15.0, 18.0),
+                          fontSize: (screenWidth * 0.048).clamp(17.0, 20.0),
                           fontWeight: FontWeight.w500,
-                          color: Colors.white.withOpacity(0.95),
+                          color: Colors.white,
                           shadows: [
                             Shadow(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withOpacity(0.4),
                               offset: const Offset(0, 1),
-                              blurRadius: 3,
+                              blurRadius: 4,
                             ),
                           ],
                         ),
@@ -326,19 +326,19 @@ class _AuthScreenState extends State<AuthScreen> {
 
                       SizedBox(height: screenHeight * 0.03),
 
-                      // Privacy note with clickable links
+                      // Privacy note with clickable links - brighter and larger
                       RichText(
                         textAlign: TextAlign.center,
                         text: TextSpan(
                           style: TextStyle(
-                            fontSize: (screenWidth * 0.03).clamp(11.0, 13.0),
-                            color: Colors.white.withOpacity(0.9),
+                            fontSize: (screenWidth * 0.033).clamp(12.0, 14.0),
+                            color: Colors.white,
                             height: 1.5,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.3),
+                                color: Colors.black.withOpacity(0.4),
                                 offset: const Offset(0, 1),
-                                blurRadius: 2,
+                                blurRadius: 3,
                               ),
                             ],
                           ),
