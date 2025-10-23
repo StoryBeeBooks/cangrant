@@ -43,7 +43,25 @@
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+		<key>UIApplicationSupportsIndirectInputEvents</key>
+		<true/>
+		<key>GIDClientID</key>
+		<string>162637828951-f7kvhsvlk68fspkbun4r6esans6p4v8k.apps.googleusercontent.com</string>
+		<key>NSAppTransportSecurity</key>
+		<dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
+		</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.162637828951-f7kvhsvlk68fspkbun4r6esans6p4v8k</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

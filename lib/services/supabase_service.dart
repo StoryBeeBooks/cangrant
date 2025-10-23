@@ -1,7 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'dart:io';
 
 class SupabaseService {
   static final SupabaseService _instance = SupabaseService._internal();
@@ -34,6 +33,12 @@ class SupabaseService {
   // Sign out
   Future<void> signOut() async {
     await client.auth.signOut();
+    // Disconnect GoogleSignIn to force account selection next time
+    try {
+      await GoogleSignIn().disconnect();
+    } catch (e) {
+      print('GoogleSignIn disconnect error: $e');
+    }
   }
 
   // Sign up with email and password
@@ -66,11 +71,10 @@ class SupabaseService {
 
   Future<AuthResponse> signInWithGoogle() async {
     try {
-      // Initialize Google Sign-In
+      // Initialize Google Sign-In with Web client ID for Supabase
       final GoogleSignIn googleSignIn = GoogleSignIn(
-        serverClientId: Platform.isAndroid
-            ? '162637828951-ql1ktn0a5274u7imfgnok16tup5etofc.apps.googleusercontent.com'
-            : null,
+        serverClientId:
+            '162637828951-u97904aqek4h78c0nnklq0avhmrqdc3r.apps.googleusercontent.com',
       );
 
       // Trigger Google Sign-In flow
